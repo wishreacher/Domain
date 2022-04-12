@@ -7,6 +7,7 @@
 #include "RangeWeapon.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAmmoChanged, int32)
+DECLARE_MULTICAST_DELEGATE(FOnReloadBegin)
 DECLARE_MULTICAST_DELEGATE(FOnReloadComplete)
 
 UENUM(BlueprintType)
@@ -46,10 +47,12 @@ public:
 	float GetAimTurnModifier() const;
 	float GetAimLookUpModifier() const;
 	UCurveFloat* GetScopeCurve() const;
+	FORCEINLINE bool CanAim() const {return bCanAim;}
 	
 	void StartReload();
 	void EndReload(bool bIsSuccess);
 	FOnReloadComplete OnReloadComplete;
+	FOnReloadBegin OnReloadBegin;
 	bool GetIsReloading() const;
 	FOnAmmoChanged OnAmmoChanged;
 	EAmmunitionType GetAmmoType() const;
@@ -57,6 +60,18 @@ public:
 	FTransform GetForeGripTransform() const;
 
 	void CanShotCallback();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	USoundBase* ImpactSound = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	USoundBase* FireSound = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	USoundBase* FullReloadSound = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	USoundBase* BulletReloadSound = nullptr;
 protected:
 	virtual void BeginPlay() override;
 	
@@ -68,13 +83,16 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Animations|Weapon")
 	UAnimMontage* WeaponFireMontage;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Animations|Weapon")
 	UAnimMontage* WeaponReloadMontage;
 	
 	UPROPERTY(EditAnywhere, Category = "Animations|Character")
-	UAnimMontage* CharacterFireMontage;
+	UAnimMontage* CharacterFireHipMontage;
 
+	UPROPERTY(EditAnywhere, Category = "Animations|Character")
+	UAnimMontage* CharacterFireAimMontage;
+	
 	UPROPERTY(EditAnywhere, Category = "Animations|Character")
 	UAnimMontage* CharacterReloadMontage;
 
@@ -119,7 +137,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon|Parameters|Aiming", meta = (ClampMin = 1, UIMin = 1))
 	int32 MaxAmmo = 30;
-
 private:
 	float GetCurrentBulletSpreadAngle() const;
 	float PlayAnimMontage(UAnimMontage* Montage) const;
@@ -130,6 +147,7 @@ private:
 	bool bIsAiming;
 	bool bCanShot = true;
 	bool bIsReloading = false;
+	bool bCanAim = true;
 	
 	FTimerHandle ShotTimer;
 	FTimerHandle ReloadTimer;

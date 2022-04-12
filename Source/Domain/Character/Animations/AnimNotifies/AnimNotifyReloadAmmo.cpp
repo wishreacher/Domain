@@ -4,6 +4,7 @@
 #include "AnimNotifyReloadAmmo.h"
 #include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 #include "Domain/Character/BaseCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 void UAnimNotifyReloadAmmo::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
@@ -14,4 +15,6 @@ void UAnimNotifyReloadAmmo::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 		return;
 	}
 	CharacterOwner->GetCharacterEquipmentComponent()->ReloadAmmoInCurrentWeapon(NumberOfAmmo, true);
+	ARangeWeapon* Weapon =  CharacterOwner->GetCharacterEquipmentComponent()->GetCurrentRangeWeapon(); 
+	UGameplayStatics::PlaySound2D(GetWorld(), Weapon->BulletReloadSound);
 }

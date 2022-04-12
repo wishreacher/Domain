@@ -6,6 +6,7 @@
 #include "Components/DecalComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "Weapons/RangeWeapon.h"
 
 void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, AController* Controller, float SpreadAngle) const
 {
@@ -68,6 +69,15 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, ACon
 		UNiagaraComponent* TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceFX, MuzzleLocation, GetComponentRotation());
 		TraceFXComponent->SetVectorParameter(FXParamTraceEnd, ShotEnd);
 	}
+	ARangeWeapon* Weapon = Cast<ARangeWeapon>(GetOwner());
+	if(IsValid(Weapon))
+	{
+		if(IsValid(Weapon->ImpactSound))
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), Weapon->ImpactSound, ShotResult.Location, FRotator::ZeroRotator, 2.f);
+		}
+	}
+	
 	
 	if(bIsDebugEnabled)
 	{

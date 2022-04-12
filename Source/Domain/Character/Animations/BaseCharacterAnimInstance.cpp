@@ -40,5 +40,8 @@ void UBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if(IsValid(CurrentRangeWeapon))
 	{
 		ForeGripSocketTransform = CurrentRangeWeapon->GetForeGripTransform();
+	} else
+	{
+		ForeGripSocketTransform = FTransform::Identity;
 	}
 }

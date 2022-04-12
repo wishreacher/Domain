@@ -31,11 +31,11 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	FOnTimelineFloat InterpFunction;
-	ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-	InterpFunction.BindUFunction(this, FName("TimelineFloatReturn"));
-	ScopeTimeLine.AddInterpFloat(RangeWeapon->GetScopeCurve(), InterpFunction, FName("Alpha"));
-	ScopeTimeLine.SetLooping(false);
+	// FOnTimelineFloat InterpFunction;
+	// ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+	// InterpFunction.BindUFunction(this, FName("TimelineFloatReturn"));
+	// ScopeTimeLine.AddInterpFloat(RangeWeapon->GetScopeCurve(), InterpFunction, FName("Alpha"));
+	// ScopeTimeLine.SetLooping(false);
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -66,22 +66,22 @@ void APlayerCharacter::MoveRight(float Value)
 
 void APlayerCharacter::Turn(float Value)
 {
-	AddControllerYawInput(Value * GetAimTurnModifier() * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::LookUp(float Value)
 {
-	AddControllerPitchInput(Value * GetAimLookUpModifier() * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::TurnAtRate(float Value)
 {
-	AddControllerYawInput(Value * GetAimTurnModifier() * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::LookUpAtRate(float Value)
 {
-	AddControllerPitchInput(Value * GetAimLookUpModifier() * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::OnDeath()
@@ -184,4 +184,9 @@ void APlayerCharacter::OnStopAimingInternal()
 		CameraManager->UnlockFOV();
 	}
 	ScopeTimeLine.Stop();
+}
+
+void APlayerCharacter::OnWeaponReloadBegin()
+{
+	OnStopAimingInternal();
 }

@@ -214,9 +214,12 @@ bool UBaseCharacterMovementComponent::CanShotInCurrentState()
 	if(IsMovingOnGround() && UpdatedComponent && !UpdatedComponent->IsSimulatingPhysics() && !IsOutOfStamina() && !IsSprinting())
 	{
 		ARangeWeapon* RangeWeapon = GetBaseCharacterOwner()->GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-		if(RangeWeapon->GetIsReloading() && RangeWeapon->GetAmmo() == 0)
+		if(IsValid(RangeWeapon))
 		{
-			return false;
+			if(RangeWeapon->GetIsReloading() && RangeWeapon->GetAmmo() == 0)
+			{
+				return false;
+			}
 		}
 		return true;
 	}

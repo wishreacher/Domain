@@ -111,6 +111,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	UCharacterAttributeComponent* GetCharacterAttributeComponent() const;
+
+	virtual void OnStartAimingInternal();
+	virtual void OnStopAimingInternal();
 protected:
 	//-----------------------------------------MOVEMENT------------------------------------------
 	bool CanMantle() const;
@@ -156,9 +159,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UCharacterEquipmentComponent* CharacterEquipmentComponent = nullptr;
 	ULedgeDetectorComponent* LedgeDetectorComponent = nullptr;
-	//-----------------------------------------Range Weapon------------------------------------------
-	virtual void OnStartAimingInternal();
-	virtual void OnStopAimingInternal();
 private:
 	void EnableRagdoll();
 	void TryChangeSprintState();

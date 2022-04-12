@@ -40,15 +40,18 @@ public:
 	
 	float GetAimTurnModifier() const;
 	float GetAimLookUpModifier() const;
+
+	virtual void OnStartAimingInternal() override;
+	virtual void OnStopAimingInternal() override;
+
+	UFUNCTION()
+	void OnWeaponReloadBegin();
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
 	class UCameraComponent* CameraComponent = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
 	class USpringArmComponent* SpringArmComponent = nullptr;
-
-	virtual void OnStartAimingInternal() override;
-	virtual void OnStopAimingInternal() override;
 
 	FTimeline ScopeTimeLine;
 };

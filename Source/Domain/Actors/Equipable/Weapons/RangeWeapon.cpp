@@ -7,6 +7,7 @@
 #include "Domain/Character/BaseCharacter.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
 #include "Domain/Components/CharacterComponents/CharacterAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "TraceServices/Public/TraceServices/Containers/Timelines.h"
 
 ARangeWeapon::ARangeWeapon()
@@ -40,7 +41,7 @@ void ARangeWeapon::StartFire()
 		}
 		bCanShot = false;
 		GetWorld()->GetTimerManager().ClearTimer(CanShootTimer);
-		GetWorld()->GetTimerManager().SetTimer(CanShootTimer, this, &ARangeWeapon::CanShotCallback, CharacterFireMontage->GetPlayLength(), false);
+		GetWorld()->GetTimerManager().SetTimer(CanShootTimer, this, &ARangeWeapon::CanShotCallback, CharacterFireHipMontage->GetPlayLength(), false);
 	}
 	MakeShot();
 }
@@ -52,6 +53,10 @@ void ARangeWeapon::StopFire()
 
 void ARangeWeapon::MakeShot()
 {
+	if(bIsReloading)
+	{
+		return;
+	}
 	checkf(GetOwner()->IsA<ABaseCharacter>(), TEXT("ARangeWeapon::StartFire() only character can be an owner of range weapon"));
 	ABaseCharacter* CharacterOwner = StaticCast<ABaseCharacter*>(GetOwner());
 
@@ -77,9 +82,24 @@ void ARangeWeapon::MakeShot()
 		return;
 	}
 
-	CharacterOwner->PlayAnimMontage(CharacterFireMontage);
-	PlayAnimMontage(WeaponFireMontage);
 	
+	if(bIsAiming)
+	{
+		if(IsValid(CharacterFireAimMontage))
+		{
+			CharacterOwner->PlayAnimMontage(CharacterFireAimMontage);
+		}
+		
+	} else if(!bIsAiming)
+	{
+		if(IsValid(CharacterFireHipMontage))
+		{
+			CharacterOwner->PlayAnimMontage(CharacterFireHipMontage);
+		}
+	}
+	
+	PlayAnimMontage(WeaponFireMontage);
+	UGameplayStatics::PlaySound2D(GetWorld(), FireSound);
 
 	FVector PlayerViewPoint;
 	FRotator PlayerViewRotation;
@@ -110,9 +130,12 @@ void ARangeWeapon::StartReload()
 	{
 		return;
 	}
+	StopAim();
+	bCanAim = false;
+	UGameplayStatics::PlaySound2D(GetWorld(), FullReloadSound);
 	checkf(GetOwner()->IsA<ABaseCharacter>(), TEXT("ARangeWeapon::StartReload() only character can be an owner of range weapon"));
 	ABaseCharacter* CharacterOwner = StaticCast<ABaseCharacter*>(GetOwner());
-
+	
 	bIsReloading = true;
 	if(IsValid(CharacterReloadMontage))
 	{
@@ -138,7 +161,13 @@ void ARangeWeapon::EndReload(bool bIsSuccess)
 	}
 
 	bIsReloading = false;
+	bCanAim = true;
 
+	if(OnReloadBegin.IsBound())
+	{
+		OnReloadBegin.Broadcast();
+	}
+	
 	if(!bIsSuccess)
 	{
 		ABaseCharacter* CharacterOwner = StaticCast<ABaseCharacter*>(GetOwner());
@@ -172,10 +201,8 @@ void ARangeWeapon::EndReload(bool bIsSuccess)
 
 	GetWorld()->GetTimerManager().ClearTimer(ReloadTimer);
 	
-	
 	if(bIsSuccess && OnReloadComplete.IsBound())
 	{
-		
 		OnReloadComplete.Broadcast();
 	}
 }
@@ -241,7 +268,11 @@ bool ARangeWeapon::CanShoot() const
 
 bool ARangeWeapon::GetIsReloading() const
 {
-	return bIsReloading;
+	if(this)
+	{
+		return bIsReloading;
+	}
+	return false;
 }
 
 EAmmunitionType ARangeWeapon::GetAmmoType() const

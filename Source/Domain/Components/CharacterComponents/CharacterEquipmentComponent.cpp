@@ -11,7 +11,10 @@ void UCharacterEquipmentComponent::BeginPlay()
 	Super::BeginPlay();
 	checkf(GetOwner()->IsA<ABaseCharacter>(), TEXT("UCharacterEquipmentComponent::BeginPlay() CharacterEquipmentComponent  can be used only with BaseCharacter"));
 	CachedBaseCharacter = StaticCast<ABaseCharacter*>(GetOwner());
-	CreateLoadout();
+	if(SideArmClass)
+	{
+		CreateLoadout();
+	}
 }
 
 void UCharacterEquipmentComponent::CreateLoadout()
@@ -46,7 +49,11 @@ EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItem() const
 
 ARangeWeapon* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 {
-	return CurrentEquippedWeapon;
+	if(CurrentEquippedWeapon)
+	{
+		return Cast<ARangeWeapon>(CurrentEquippedWeapon);
+	}
+	return nullptr;
 }
 
 void UCharacterEquipmentComponent::ReloadCurrentWeapon()

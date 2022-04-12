@@ -224,6 +224,10 @@ void ABaseCharacter::StartFire()
 	{
 		return;
 	}
+	if(!CharacterEquipmentComponent->GetCurrentRangeWeapon())
+	{
+		return;
+	}
 	ARangeWeapon* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
 	if(CurrentRangeWeapon)
 	{
@@ -244,6 +248,10 @@ void ABaseCharacter::StartAim()
 {
 	ARangeWeapon* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
 	if(!CurrentRangeWeapon)
+	{
+		return;
+	}
+	if(!CurrentRangeWeapon->CanAim())
 	{
 		return;
 	}
@@ -290,6 +298,10 @@ void ABaseCharacter::OnStopAiming_Implementation()
 
 void ABaseCharacter::Reload() const
 {
+	if(!CharacterEquipmentComponent->GetCurrentRangeWeapon())
+	{
+		return;
+	}
 	if(CharacterEquipmentComponent->GetCurrentRangeWeapon())
 	{
 		CharacterEquipmentComponent->ReloadCurrentWeapon();

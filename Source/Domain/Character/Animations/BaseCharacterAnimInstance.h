@@ -50,5 +50,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Character|Animation")
 	bool bIsAiming; 
 private:
+	TWeakObjectPtr<class ARangeWeapon> Weapon;
 	TWeakObjectPtr<class ABaseCharacter> CachedBaseCharacter;
 };
