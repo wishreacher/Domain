@@ -137,15 +137,28 @@ void UBaseCharacterMovementComponent::EndSprint()
 bool UBaseCharacterMovementComponent::CanJumpAndSprint()
 {
 	bIsOutOfStamina = false;
-	SetJumpAllowed(!bIsOutOfStamina);
+	SetJumpAllowed(!bIsOutOfStamina && !bIsSprinting);
 	return bIsOutOfStamina;
 }
 
 bool UBaseCharacterMovementComponent::CannotJumpAndSprint()
 {
 	bIsOutOfStamina = true;
-	SetJumpAllowed(!bIsOutOfStamina);
+	SetJumpAllowed(!bIsOutOfStamina && !bIsSprinting);
 	return bIsOutOfStamina;
+}
+
+bool UBaseCharacterMovementComponent::CanCrouchInCurrentState() const
+{
+	if(bIsSprinting)
+	{
+		return false;
+	}
+	if(bIsOutOfStamina)
+	{
+		return false;
+	}
+	return Super::CanCrouchInCurrentState();
 }
 
 void UBaseCharacterMovementComponent::SetIsOutOfStamina(bool bIsOutOfStamina_In)
@@ -156,13 +169,6 @@ void UBaseCharacterMovementComponent::SetIsOutOfStamina(bool bIsOutOfStamina_In)
 		EndSprint();
 	}
 }
-
-//Crouch and Prone
-bool UBaseCharacterMovementComponent::CanProneInCurrentState()
-{
-	return IsMovingOnGround() && UpdatedComponent && !UpdatedComponent->IsSimulatingPhysics();
-}
-
 //Mantling
 void UBaseCharacterMovementComponent::StartMantle(const FMantlingMovementParameters& MantlingParameters)
 {

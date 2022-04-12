@@ -48,9 +48,9 @@ public:
 	void EndSprint();
 	bool CanJumpAndSprint();
 	bool CannotJumpAndSprint();
+	virtual bool CanCrouchInCurrentState() const override;
 
 	//-----------------------------------------Prone and Crouch------------------------------------------
-	bool CanProneInCurrentState();
 	bool CanShotInCurrentState();
 	
 	//-----------------------------------------Mantle------------------------------------------

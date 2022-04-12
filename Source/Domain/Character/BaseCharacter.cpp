@@ -88,9 +88,12 @@ void ABaseCharacter::Jump()
 
 void ABaseCharacter::ChangeCrouchState()
 {
-	if(bCanCrouch && !GetCharacterMovement()->IsCrouching() && !BaseCharacterMovementComponent->bIsOutOfStamina)
+	if(BaseCharacterMovementComponent->CanCrouchInCurrentState() && !GetCharacterMovement()->IsCrouching() && !BaseCharacterMovementComponent->bIsOutOfStamina)
 	{
 		Crouch();
+	} else if(GetCharacterMovement()->IsCrouching())
+	{
+		UnCrouch();
 	}
 }
 
@@ -150,7 +153,7 @@ bool ABaseCharacter::CanJumpInternal_Implementation() const
 void ABaseCharacter::StartSprint()
 {
 	bIsSprintRequested = true;
-	if (bIsCrouched && BaseCharacterMovementComponent->CanProneInCurrentState()==false)
+	if (bIsCrouched)
 	{
 		UnCrouch();
 	}
@@ -211,11 +214,6 @@ void ABaseCharacter::TryChangeSprintState()
 	{
 		BaseCharacterMovementComponent->EndSprint();
 		OnSprintEnd();
-	}
-
-	if (BaseCharacterMovementComponent->IsSprinting())
-	{
-		bCanCrouch = false;
 	}
 }
 
