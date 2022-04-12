@@ -24,7 +24,10 @@ public:
 
 	void UpdateStaminaValue(float DeltaTime);
 
+	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() const;
+	
+	UFUNCTION(BlueprintCallable)
 	float GetStaminaPercent() const;
 
 	FOnDeathEventSignature OnDeathEvent;

@@ -53,15 +53,15 @@ protected:
 	virtual void BeginPlay() override;
 
 	/** Minimal height from player's bottom to detected ledge. Usually equals to MaxStepHeight from CharacterMovementComponent */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Detection settings", meta = (UIMin = 0.0f, ClampMin = 0.0f))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Detection settings", meta = (UIMin = 0.0f, ClampMin = 0.0f))
 	float MinimumLedgeHeight = 40.0f;
 
 	/** Maximal height from player's bottom to detected ledge. Determines maximal height of an obstacle available for mantling */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Detection settings", meta = (UIMin = 0.0f, ClampMin = 0.0f))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Detection settings", meta = (UIMin = 0.0f, ClampMin = 0.0f))
 	float MaximumLedgeHeight = 200.0f;
 
 	//* Maximum distance from player to detected ledge in a movement direction. Determines maximum distance when a player starts mantling */ 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Detection settings", meta = (UIMin = 0.0f, ClampMin = 0.0f))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Detection settings", meta = (UIMin = 0.0f, ClampMin = 0.0f))
 	float ForwardCheckDistance = 100.0f;
 	
 private:

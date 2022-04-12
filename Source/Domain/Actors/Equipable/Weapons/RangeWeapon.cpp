@@ -62,10 +62,13 @@ void ARangeWeapon::MakeShot()
 	}
 
 	EndReload(false);
-	
-	if(!CharacterOwner->GetCharacterAttributeComponent()->IsAlive())
+
+	if(IsValid(CharacterOwner->GetCharacterAttributeComponent()))
 	{
-		return;
+		if(!CharacterOwner->GetCharacterAttributeComponent()->IsAlive())
+		{
+			return;
+		}
 	}
 	
 	APlayerController* Controller = CharacterOwner->GetController<APlayerController>();

@@ -151,7 +151,9 @@ protected:
 	virtual void OnOutOfStamina(bool IsOutOfStamina);
 	
 	UBaseCharacterMovementComponent* BaseCharacterMovementComponent = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UCharacterAttributeComponent* CharacterAttributeComponent = nullptr;
+	UPROPERTY(EditAnywhere)
 	UCharacterEquipmentComponent* CharacterEquipmentComponent = nullptr;
 	ULedgeDetectorComponent* LedgeDetectorComponent = nullptr;
 	//-----------------------------------------Range Weapon------------------------------------------

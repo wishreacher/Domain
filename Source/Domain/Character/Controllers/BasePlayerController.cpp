@@ -13,12 +13,12 @@ void ABasePlayerController::SetPawn(APawn* InPawn)
 void ABasePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	InputComponent->BindAxis("MoveForward", this, &ABasePlayerController::MoveForward);
-	InputComponent->BindAxis("MoveRight", this, &ABasePlayerController::MoveRight);
-	InputComponent->BindAxis("Turn", this, &ABasePlayerController::Turn);
-	InputComponent->BindAxis("LookUp", this, &ABasePlayerController::LookUp);
-	InputComponent->BindAxis("TurnAtRate", this, &ABasePlayerController::TurnAtRate);
-	InputComponent->BindAxis("LookUpAtRate", this, &ABasePlayerController::LookUpAtRate);
+	InputComponent->BindAxis("Move Forward / Backward", this, &ABasePlayerController::MoveForward);
+	InputComponent->BindAxis("Move Right / Left", this, &ABasePlayerController::MoveRight);
+	InputComponent->BindAxis("Turn Right / Left Mouse", this, &ABasePlayerController::Turn);
+	InputComponent->BindAxis("Look Up / Down Mouse", this, &ABasePlayerController::LookUp);
+	InputComponent->BindAxis("Turn Right / Left Gamepad", this, &ABasePlayerController::TurnAtRate);
+	InputComponent->BindAxis("Look Up / Down Gamepad", this, &ABasePlayerController::LookUpAtRate);
 	InputComponent->BindAction("Mantle", EInputEvent::IE_Pressed, this, &ABasePlayerController::Mantle);
 	InputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ABasePlayerController::Jump);
 	InputComponent->BindAction("Crouch", EInputEvent::IE_Pressed, this, &ABasePlayerController::ChangeCrouchState);

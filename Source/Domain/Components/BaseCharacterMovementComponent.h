@@ -72,10 +72,10 @@ protected:
 	virtual void PhysCustom(float DeltaTime, int32 Iterations) override;
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
 	float SprintSpeed = 1200.0f;
 	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
 	float OutOfStaminaSpeed = 200.0f;
 
 	UPROPERTY(Category=Character, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))

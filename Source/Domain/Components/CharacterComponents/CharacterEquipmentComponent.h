@@ -32,10 +32,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loadout")
 	TSubclassOf<ARangeWeapon> SideArmClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Loadout")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loadout")
 	TMap<EAmmunitionType, int32> MaxAmmunitionAmount;
 
 private:

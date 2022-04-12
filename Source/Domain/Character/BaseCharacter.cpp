@@ -15,21 +15,24 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	BaseCharacterMovementComponent = StaticCast<UBaseCharacterMovementComponent*>(GetCharacterMovement());
-	LedgeDetectorComponent = CreateDefaultSubobject<ULedgeDetectorComponent>(TEXT("LedgeDetector"));
-
+	
 	GetMesh()->CastShadow = true;
 	GetMesh()->bCastDynamicShadow = true;
 	
 	CharacterAttributeComponent = CreateDefaultSubobject<UCharacterAttributeComponent>(TEXT("CharacterAttributes"));
 	CharacterEquipmentComponent = CreateDefaultSubobject<UCharacterEquipmentComponent>(TEXT("CharacterEquipment"));
+	LedgeDetectorComponent = CreateDefaultSubobject<ULedgeDetectorComponent>(TEXT("LedgeDetector"));
 }
 
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	CharacterAttributeComponent->OnOutOfStaminaEvent.AddUObject(this, &ABaseCharacter::OnOutOfStamina);
-	CharacterAttributeComponent->OnDeathEvent.AddUObject(this, &ABaseCharacter::OnDeath);
+
+	if(IsValid(CharacterAttributeComponent))
+	{
+		CharacterAttributeComponent->OnOutOfStaminaEvent.AddUObject(this, &ABaseCharacter::OnOutOfStamina);
+		CharacterAttributeComponent->OnDeathEvent.AddUObject(this, &ABaseCharacter::OnDeath);
+	}
 }
 
 //Movement
@@ -77,7 +80,10 @@ void ABaseCharacter::Tick(float DeltaSeconds)
 void ABaseCharacter::Jump()
 {
 	Super::Jump();
-	CharacterEquipmentComponent->GetCurrentRangeWeapon()->StopFire();
+	if(CharacterEquipmentComponent->GetCurrentRangeWeapon())
+	{
+		CharacterEquipmentComponent->GetCurrentRangeWeapon()->StopFire();
+	}
 }
 
 void ABaseCharacter::ChangeCrouchState()
@@ -148,7 +154,11 @@ void ABaseCharacter::StartSprint()
 	{
 		UnCrouch();
 	}
-	GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->EndReload(false);
+	if(CharacterEquipmentComponent->GetCurrentRangeWeapon())
+	{
+		GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->EndReload(false);
+	}
+	
 	StopAim();
 }
 

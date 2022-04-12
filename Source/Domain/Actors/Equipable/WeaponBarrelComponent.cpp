@@ -63,9 +63,11 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, ACon
 			GEngine->AddOnScreenDebugMessage(0, 2.f, FColor::Magenta, FString::Printf(TEXT("%f damage done"), FinalDamage));
 		}
 	}
-
-	UNiagaraComponent* TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceFX, MuzzleLocation, GetComponentRotation());
-	TraceFXComponent->SetVectorParameter(FXParamTraceEnd, ShotEnd);
+	if(IsValid(TraceFX))
+	{
+		UNiagaraComponent* TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceFX, MuzzleLocation, GetComponentRotation());
+		TraceFXComponent->SetVectorParameter(FXParamTraceEnd, ShotEnd);
+	}
 	
 	if(bIsDebugEnabled)
 	{
