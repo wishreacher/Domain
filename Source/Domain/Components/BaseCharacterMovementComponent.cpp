@@ -26,6 +26,10 @@ float UBaseCharacterMovementComponent::GetMaxSpeed() const
 	{
 		Result = GetBaseCharacterOwner()->GetAimingMovementSpeed();
 	}
+	if(GetBaseCharacterOwner()->GetIsCrouching())
+	{
+		Result = CrouchSpeed;
+	}
 	return Result;
 }
 
@@ -51,8 +55,6 @@ void UBaseCharacterMovementComponent::PhysCustom(float DeltaTime, int32 Iteratio
 
 void UBaseCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
 {
-	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
-	
 	if(PreviousMovementMode == MOVE_Swimming)
 	{
 		ACharacter* DefaultCharacter = CharacterOwner->GetClass()->GetDefaultObject<ACharacter>();
@@ -71,6 +73,7 @@ void UBaseCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previo
 				break;
 		}
 	}
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
 }
 
 void UBaseCharacterMovementComponent::PhysicsRotation(float DeltaTime)

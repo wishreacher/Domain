@@ -77,6 +77,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
 	float OutOfStaminaSpeed = 200.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
+    float CrouchSpeed = 400.0f;
 
 	UPROPERTY(Category=Character, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* Mesh;

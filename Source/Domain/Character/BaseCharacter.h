@@ -71,10 +71,10 @@ public:
 	virtual void LookUpAtRate(float Value){}
 	virtual void StartSprint();
 	virtual void StopSprint();
-
 	virtual bool CanSprint();
-	
 	virtual void ChangeCrouchState();
+	virtual void Crouch(bool bClientSimulation) override;
+	virtual void UnCrouch(bool bClientSimulation) override;
 
 	/** Activates mantling
 	 * if ULedgeDetectorComponent() detects a climbable ledge:
@@ -104,6 +104,7 @@ public:
 	//-----------------------------------------Getters------------------------------------------
 	FORCEINLINE UBaseCharacterMovementComponent* GetBaseCharacterMovementComponent() const { return BaseCharacterMovementComponent; }
 	FORCEINLINE bool GetIsSprinting() const {return bIsSprinting;}
+	FORCEINLINE bool GetIsCrouching() const {return bIsCrouching;}
 
 	UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const;
 	bool GetIsAiming() const;
@@ -169,6 +170,7 @@ private:
 	bool bIsSprinting = false;
 	bool bCanCrouch = true;
 	bool bIsAiming;
+	bool bIsCrouching = false;
 	
 	FTimerHandle DeathMontageTimer;
 	FVector CurrentFallApex;

@@ -113,7 +113,7 @@ void APlayerCharacter::OnJumped_Implementation()
 {
 	if(bIsCrouched)
 	{
-		UnCrouch();
+		UnCrouch(true);
 	}
 }
 

@@ -90,11 +90,25 @@ void ABaseCharacter::ChangeCrouchState()
 {
 	if(BaseCharacterMovementComponent->CanCrouchInCurrentState() && !GetCharacterMovement()->IsCrouching() && !BaseCharacterMovementComponent->bIsOutOfStamina)
 	{
-		Crouch();
+		
+		Crouch(true);
 	} else if(GetCharacterMovement()->IsCrouching())
 	{
-		UnCrouch();
+		
+		UnCrouch(true);
 	}
+}
+
+void ABaseCharacter::Crouch(bool bClientSimulation)
+{
+	Super::Crouch(bClientSimulation);
+	bIsCrouching = true;
+}
+
+void ABaseCharacter::UnCrouch(bool bClientSimulation)
+{
+	Super::UnCrouch(bClientSimulation);
+	bIsCrouching = false;
 }
 
 void ABaseCharacter::Mantle(bool bForce)
@@ -155,7 +169,7 @@ void ABaseCharacter::StartSprint()
 	bIsSprintRequested = true;
 	if (bIsCrouched)
 	{
-		UnCrouch();
+		UnCrouch(true);
 	}
 	if(CharacterEquipmentComponent->GetCurrentRangeWeapon())
 	{
