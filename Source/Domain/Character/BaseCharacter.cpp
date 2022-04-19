@@ -2,7 +2,6 @@
 
 
 #include "BaseCharacter.h"
-
 #include "Curves/CurveVector.h"
 #include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
@@ -22,6 +21,7 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	CharacterAttributeComponent = CreateDefaultSubobject<UCharacterAttributeComponent>(TEXT("CharacterAttributes"));
 	CharacterEquipmentComponent = CreateDefaultSubobject<UCharacterEquipmentComponent>(TEXT("CharacterEquipment"));
 	LedgeDetectorComponent = CreateDefaultSubobject<ULedgeDetectorComponent>(TEXT("LedgeDetector"));
+	
 }
 
 void ABaseCharacter::BeginPlay()

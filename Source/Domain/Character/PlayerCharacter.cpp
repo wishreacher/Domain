@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/CameraShakeSourceComponent.h"
 #include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
 #include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
@@ -23,6 +24,9 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     CameraComponent->SetupAttachment(SpringArmComponent);
 	CameraComponent->bUsePawnControlRotation = false;
+	
+	CameraShakeComponent = CreateDefaultSubobject<UCameraShakeSourceComponent>(TEXT("CameraShake"));
+	CameraShakeComponent->SetupAttachment(CameraComponent);
 
 	GetCharacterMovement()->bOrientRotationToMovement = 1;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
@@ -31,8 +35,8 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	// FOnTimelineFloat InterpFunction;
-	// ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+	// ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurr
+	// FOnTimelineFloat InterpFunction;entRangeWeapon();
 	// InterpFunction.BindUFunction(this, FName("TimelineFloatReturn"));
 	// ScopeTimeLine.AddInterpFloat(RangeWeapon->GetScopeCurve(), InterpFunction, FName("Alpha"));
 	// ScopeTimeLine.SetLooping(false);

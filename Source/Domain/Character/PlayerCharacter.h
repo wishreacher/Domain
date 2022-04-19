@@ -46,12 +46,18 @@ public:
 
 	UFUNCTION()
 	void OnWeaponReloadBegin();
+
+	FORCEINLINE UCameraShakeSourceComponent* GetCameraShakeComponent() const {return CameraShakeComponent;}
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
 	class UCameraComponent* CameraComponent = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
 	class USpringArmComponent* SpringArmComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
+	UCameraShakeSourceComponent* CameraShakeComponent = nullptr;
 
 	FTimeline ScopeTimeLine;
 };
