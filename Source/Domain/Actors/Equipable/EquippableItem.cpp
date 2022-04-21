@@ -17,3 +17,8 @@ FName AEquippableItem::GetUnEquippedSocketName() const
 {
 	return UnEquippedSocketName;
 }
+
+UAnimMontage* AEquippableItem::GetCharacterEquipAnimMontage() const
+{
+	return CharacterEquipAnimMontage;
+}

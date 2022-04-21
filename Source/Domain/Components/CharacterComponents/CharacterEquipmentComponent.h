@@ -29,6 +29,8 @@ public:
 	FOnCurrentWeaponAmmoChangedEvent OnCurrentWeaponAmmoChangedEvent;
 	EEquipableItemType GetCurrentEquippedItem() const;
 	ARangeWeapon* GetCurrentRangeWeapon() const;
+	void UnEquipCurrentItem();
+	void AttachCurrentItemToEquippedSocket();
 
 	void EquipItemInSlot(EEquipmentSlots Slot);
 
@@ -37,7 +39,8 @@ public:
 
 	uint32 NextItemsArraySlotIndex(uint32 CurrentSlotIndex);
 	uint32 PreviousItemsArraySlotIndex(uint32 CurrentSlotIndex);
-	
+
+	bool GetIsEquipping() const;	
 protected:
 	virtual void BeginPlay() override;
 
@@ -48,6 +51,9 @@ protected:
 	TMap<EEquipmentSlots, TSubclassOf<class AEquippableItem>> ItemsLoadout;
 
 private:
+	bool bIsEquipping = false;
+
+	
 	void CreateLoadout();
 
 	UFUNCTION()
@@ -58,8 +64,12 @@ private:
 	TAmmunitionArray AmmunitionArray;
 	TItemsArray ItemsArray;
 
+	void EquipAnimationFinished();
+
 	FDelegateHandle OnCurrentWeaponAmmoChangedHandle;
 	FDelegateHandle OnCurrentWeaponReloadedHandle;
+
+	FTimerHandle EquipTimer;
 
 	EEquipmentSlots CurrentEquippedSlot;
 	AEquippableItem* CurrentEquippedItem;

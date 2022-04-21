@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "EquippableItem.generated.h"
 
+class UAnimMontage;
 UCLASS()
 class DOMAIN_API AEquippableItem : public AActor
 {
@@ -16,6 +17,7 @@ public:
 	EEquipableItemType GetItemType() const;
 	FName GetEquippedSocketName() const;
 	FName GetUnEquippedSocketName() const;
+	UAnimMontage* GetCharacterEquipAnimMontage() const;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	EEquipableItemType EquippedItemType = EEquipableItemType::None;
@@ -25,4 +27,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	FName EquippedSocketName = NAME_None;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
+	UAnimMontage* CharacterEquipAnimMontage;
 };

@@ -242,6 +242,10 @@ void ABaseCharacter::StartFire()
 	{
 		return;
 	}
+	if(CharacterEquipmentComponent->GetIsEquipping())
+	{
+		return;
+	}
 	ARangeWeapon* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
 	if(CurrentRangeWeapon)
 	{
