@@ -35,8 +35,8 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	// ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurr
-	// FOnTimelineFloat InterpFunction;entRangeWeapon();
+	ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+	// FOnTimelineFloat InterpFunction;
 	// InterpFunction.BindUFunction(this, FName("TimelineFloatReturn"));
 	// ScopeTimeLine.AddInterpFloat(RangeWeapon->GetScopeCurve(), InterpFunction, FName("Alpha"));
 	// ScopeTimeLine.SetLooping(false);
