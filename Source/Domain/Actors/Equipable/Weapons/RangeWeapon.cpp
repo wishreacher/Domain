@@ -19,6 +19,8 @@ ARangeWeapon::ARangeWeapon()
 
 	WeaponBarrel = CreateDefaultSubobject<UWeaponBarrelComponent>(TEXT("WeaponBarrelComponent"));
 	WeaponBarrel->SetupAttachment(WeaponMesh, SocketWeaponMuzzle);
+
+	EquippedSocketName = SocketCharacterWeapon;
 }
 
 void ARangeWeapon::BeginPlay()
@@ -81,7 +83,6 @@ void ARangeWeapon::MakeShot()
 	{
 		return;
 	}
-
 	
 	if(bIsAiming)
 	{

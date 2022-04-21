@@ -294,6 +294,16 @@ void ABaseCharacter::StopAim()
 	OnStopAiming();
 }
 
+void ABaseCharacter::NextItem()
+{
+	CharacterEquipmentComponent->EquipNextItem();
+}
+
+void ABaseCharacter::PreviousItem()
+{
+	CharacterEquipmentComponent->EquipPreviousItem();
+}
+
 void ABaseCharacter::EnableRagdoll()
 {
 	GetMesh()->SetCollisionProfileName(CollisionProfileRagdoll);
@@ -310,7 +320,7 @@ void ABaseCharacter::OnStopAiming_Implementation()
 	OnStopAimingInternal();
 }
 
-void ABaseCharacter::Reload() const
+void ABaseCharacter::Reload()
 {
 	if(!CharacterEquipmentComponent->GetCurrentRangeWeapon())
 	{

@@ -14,7 +14,15 @@ class DOMAIN_API AEquippableItem : public AActor
 	
 public:
 	EEquipableItemType GetItemType() const;
+	FName GetEquippedSocketName() const;
+	FName GetUnEquippedSocketName() const;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	EEquipableItemType EquippedItemType = EEquipableItemType::None;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
+	FName UnEquippedSocketName = NAME_None;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
+	FName EquippedSocketName = NAME_None;
 };

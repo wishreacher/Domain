@@ -11,10 +11,9 @@ void UCharacterEquipmentComponent::BeginPlay()
 	Super::BeginPlay();
 	checkf(GetOwner()->IsA<ABaseCharacter>(), TEXT("UCharacterEquipmentComponent::BeginPlay() CharacterEquipmentComponent  can be used only with BaseCharacter"));
 	CachedBaseCharacter = StaticCast<ABaseCharacter*>(GetOwner());
-	if(SideArmClass)
-	{
-		CreateLoadout();
-	}
+	
+	CreateLoadout();
+	
 }
 
 void UCharacterEquipmentComponent::CreateLoadout()
@@ -24,17 +23,26 @@ void UCharacterEquipmentComponent::CreateLoadout()
 	{
 		AmmunitionArray[(uint32)AmmoPair.Key] = FMath::Max(AmmoPair.Value, 0);
 	}
-	
-	if(!IsValid(SideArmClass))
+
+	ItemsArray.AddZeroed((uint32)EEquipmentSlots::MAX);
+	for(const TPair<EEquipmentSlots, TSubclassOf<AEquippableItem>>& ItemPair : ItemsLoadout)
 	{
-		return;
+		if(!IsValid(ItemPair.Value))
+		{
+			continue;
+		}
+		AEquippableItem* Item = GetWorld()->SpawnActor<AEquippableItem>(ItemPair.Value);
+		Item->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, Item->GetUnEquippedSocketName());
+		Item->SetOwner(CachedBaseCharacter.Get());
+		ItemsArray[(uint32)ItemPair.Key] = Item;
 	}
-	CurrentEquippedWeapon = GetWorld()->SpawnActor<ARangeWeapon>(SideArmClass);
-	CurrentEquippedWeapon->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, SocketCharacterWeapon);
-	CurrentEquippedWeapon->SetOwner(CachedBaseCharacter.Get());
-	CurrentEquippedWeapon->OnAmmoChanged.AddUFunction(this, FName("CurrentWeaponAmmoChanged"));
-	CurrentEquippedWeapon->OnReloadComplete.AddUFunction(this, FName("OnWeaponReloadComplete"));
-	CurrentWeaponAmmoChanged(CurrentEquippedWeapon->GetAmmo());
+	
+	// CurrentEquippedWeapon = GetWorld()->SpawnActor<ARangeWeapon>(SideArmClass);
+	// CurrentEquippedWeapon->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, SocketCharacterWeapon);
+	// CurrentEquippedWeapon->SetOwner(CachedBaseCharacter.Get());
+	// CurrentEquippedWeapon->OnAmmoChanged.AddUFunction(this, FName("CurrentWeaponAmmoChanged"));
+	// CurrentEquippedWeapon->OnReloadComplete.AddUFunction(this, FName("OnWeaponReloadComplete"));
+	// CurrentWeaponAmmoChanged(CurrentEquippedWeapon->GetAmmo());
 }
 
 EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItem() const
@@ -54,6 +62,95 @@ ARangeWeapon* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 		return Cast<ARangeWeapon>(CurrentEquippedWeapon);
 	}
 	return nullptr;
+}
+
+void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
+{
+	if(IsValid(CurrentEquippedItem))
+	{
+		CurrentEquippedItem->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
+			CurrentEquippedItem->GetUnEquippedSocketName());
+	}
+	
+	if(IsValid(CurrentEquippedWeapon))
+	{
+		CurrentEquippedWeapon->OnAmmoChanged.Remove(OnCurrentWeaponAmmoChangedHandle);
+		CurrentEquippedWeapon->OnReloadComplete.Remove(OnCurrentWeaponReloadedHandle);
+	}
+	
+	CurrentEquippedItem = ItemsArray[(uint32)Slot];
+	CurrentEquippedWeapon = Cast<ARangeWeapon>(CurrentEquippedItem);
+
+	if(IsValid(CurrentEquippedItem))
+	{
+		CurrentEquippedItem->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
+			CurrentEquippedItem->GetEquippedSocketName());
+		CurrentEquippedSlot = Slot;
+	} else
+	{
+		CurrentEquippedSlot = EEquipmentSlots::None;
+	}
+
+	if(IsValid(CurrentEquippedWeapon))
+	{
+		OnCurrentWeaponAmmoChangedHandle = CurrentEquippedWeapon->OnAmmoChanged.AddUFunction(this, FName("CurrentWeaponAmmoChanged"));
+		OnCurrentWeaponReloadedHandle = CurrentEquippedWeapon->OnReloadComplete.AddUFunction(this, FName("OnWeaponReloadComplete"));
+		CurrentWeaponAmmoChanged(CurrentEquippedWeapon->GetAmmo());
+	}
+}
+
+void UCharacterEquipmentComponent::EquipNextItem()
+{
+	uint32 CurrentSlotIndex = (uint32)CurrentEquippedSlot;
+	uint32 NextSlotIndex = NextItemsArraySlotIndex(CurrentSlotIndex);
+
+	while(CurrentSlotIndex != NextSlotIndex && !IsValid(ItemsArray[NextSlotIndex]))
+	{
+		NextSlotIndex = NextItemsArraySlotIndex(NextSlotIndex);
+	}
+	
+	if(CurrentSlotIndex != NextSlotIndex)
+	{
+		EquipItemInSlot((EEquipmentSlots)NextSlotIndex);
+	}
+}
+
+void UCharacterEquipmentComponent::EquipPreviousItem()
+{
+	uint32 CurrentSlotIndex = (uint32)CurrentEquippedSlot;
+	uint32 PreviousSlotIndex = PreviousItemsArraySlotIndex(CurrentSlotIndex);
+
+	while(CurrentSlotIndex != PreviousSlotIndex && !IsValid(ItemsArray[PreviousSlotIndex]))
+	{
+		PreviousSlotIndex = PreviousItemsArraySlotIndex(PreviousSlotIndex);
+	}
+	
+	if(CurrentSlotIndex != PreviousSlotIndex)
+	{
+		EquipItemInSlot((EEquipmentSlots)PreviousSlotIndex);
+	}
+}
+
+uint32 UCharacterEquipmentComponent::NextItemsArraySlotIndex(uint32 CurrentSlotIndex)
+{
+	if(CurrentSlotIndex == ItemsArray.Num() - 1)
+	{
+		return 0;
+	} else
+	{
+		return CurrentSlotIndex + 1;
+	}
+}
+
+uint32 UCharacterEquipmentComponent::PreviousItemsArraySlotIndex(uint32 CurrentSlotIndex)
+{
+	if(CurrentSlotIndex == 0)
+	{
+		return ItemsArray.Num() - 1;
+	} else
+	{
+		return CurrentSlotIndex - 1;
+	}
 }
 
 void UCharacterEquipmentComponent::ReloadCurrentWeapon()

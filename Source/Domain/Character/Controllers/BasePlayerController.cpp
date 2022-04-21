@@ -29,6 +29,8 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ABasePlayerController::StartAim);
 	InputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ABasePlayerController::StopAim);
 	InputComponent->BindAction("Reload", EInputEvent::IE_Pressed, this, &ABasePlayerController::Reload);
+	InputComponent->BindAction("NextItem", EInputEvent::IE_Pressed, this, &ABasePlayerController::NextItem);
+	InputComponent->BindAction("PreviousItem", EInputEvent::IE_Pressed, this, &ABasePlayerController::PreviousItem);
 }
 
 void ABasePlayerController::MoveForward(float Value)
@@ -125,6 +127,22 @@ void ABasePlayerController::Reload()
 	if(CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->Reload();
+	}
+}
+
+void ABasePlayerController::NextItem()
+{
+	if(CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->NextItem();
+	}
+}
+
+void ABasePlayerController::PreviousItem()
+{
+	if(CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->PreviousItem();
 	}
 }
 

@@ -25,7 +25,8 @@ enum class EEquipableItemType : uint8
 {
 	None,
 	Pistol,
-	Rifle
+	Rifle,
+	MAX UMETA(Hidden)
 };
 
 UENUM(Blueprintable)

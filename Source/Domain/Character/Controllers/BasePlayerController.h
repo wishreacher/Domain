@@ -38,6 +38,8 @@ private:
 	void StartAim();
 	void StopAim();
 	void Reload();
+	void NextItem();
+	void PreviousItem();
 	
 	TSoftObjectPtr<class ABaseCharacter> CachedBaseCharacter;
 };

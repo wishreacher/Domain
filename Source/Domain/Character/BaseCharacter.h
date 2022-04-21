@@ -99,7 +99,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
 	void OnStopAiming();
 
-	void Reload() const;
+	void Reload();
+
+	void NextItem();
+	void PreviousItem();
 	
 	//-----------------------------------------Getters------------------------------------------
 	FORCEINLINE UBaseCharacterMovementComponent* GetBaseCharacterMovementComponent() const { return BaseCharacterMovementComponent; }
