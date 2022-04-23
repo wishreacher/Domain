@@ -23,3 +23,18 @@ void ABaseProjectile::LaunchProjectile(FVector Direction)
 	CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
 }
 
+void ABaseProjectile::BeginPlay()
+{
+	Super::BeginPlay();
+	CollisionComponent->OnComponentHit.AddDynamic(this, &ABaseProjectile::OnCollisionHit);
+}
+
+void ABaseProjectile::OnCollisionHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if(OnProjectileHit.IsBound())
+	{
+		OnProjectileHit.Broadcast(Hit, ProjectileMovementComponent->Velocity.GetSafeNormal());
+	}
+}
+

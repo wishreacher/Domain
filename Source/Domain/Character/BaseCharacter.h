@@ -158,7 +158,7 @@ protected:
 	virtual void OnOutOfStamina(bool IsOutOfStamina);
 	
 	UBaseCharacterMovementComponent* BaseCharacterMovementComponent = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere)
 	UCharacterAttributeComponent* CharacterAttributeComponent = nullptr;
 	UPROPERTY(EditAnywhere)
 	UCharacterEquipmentComponent* CharacterEquipmentComponent = nullptr;

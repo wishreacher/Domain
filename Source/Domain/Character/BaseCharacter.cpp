@@ -9,7 +9,6 @@
 #include "Domain/Components/CharacterComponents/CharacterAttributeComponent.h"
 #include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 
-
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -21,7 +20,6 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	CharacterAttributeComponent = CreateDefaultSubobject<UCharacterAttributeComponent>(TEXT("CharacterAttributes"));
 	CharacterEquipmentComponent = CreateDefaultSubobject<UCharacterEquipmentComponent>(TEXT("CharacterEquipment"));
 	LedgeDetectorComponent = CreateDefaultSubobject<ULedgeDetectorComponent>(TEXT("LedgeDetector"));
-	
 }
 
 void ABaseCharacter::BeginPlay()

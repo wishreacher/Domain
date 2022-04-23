@@ -3,11 +3,13 @@
 
 #include "BasePlayerController.h"
 #include "Domain/Character/BaseCharacter.h"
+#include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 void ABasePlayerController::SetPawn(APawn* InPawn)
 {
 	Super::SetPawn(InPawn);
 	CachedBaseCharacter = Cast<ABaseCharacter>(InPawn);
+	CreateAndInitializeWidgets();
 }
 
 void ABasePlayerController::SetupInputComponent()
@@ -143,6 +145,33 @@ void ABasePlayerController::PreviousItem()
 	if(CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->PreviousItem();
+	}
+}
+
+void ABasePlayerController::CreateAndInitializeWidgets()
+{
+	if(!IsValid(PlayerHUDWidget))
+	{
+		PlayerHUDWidget = CreateWidget<UPlayerHUDWidget>(GetWorld(), PlayerHUDWidgetClass);
+		if(IsValid(PlayerHUDWidget))
+		{
+			PlayerHUDWidget->AddToViewport();
+		}
+	}
+	if(IsValid(PlayerHUDWidget) && CachedBaseCharacter.IsValid() )
+	{
+		UCrosshairWidget* CrosshairWidget = PlayerHUDWidget->GetCrosshairWidget();
+		if(IsValid(CrosshairWidget))
+		{
+			CachedBaseCharacter->OnAimingStateChanged.AddUFunction(CrosshairWidget, FName("OnAimingStateChanged"));
+		}
+
+		UAmmoWidget* AmmoWidget = PlayerHUDWidget->GetAmmoWidget();
+		if(IsValid(AmmoWidget))
+		{
+			UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
+			CharacterEquipment->OnCurrentWeaponAmmoChangedEvent.AddUFunction(AmmoWidget, FName("UpdateAmmoCount"));
+		}
 	}
 }
 

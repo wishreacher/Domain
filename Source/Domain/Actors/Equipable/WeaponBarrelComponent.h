@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
+#include "Domain/Actors/Projectiles/BaseProjectile.h"
 #include "WeaponBarrelComponent.generated.h"
 
 USTRUCT(BlueprintType)
@@ -23,6 +24,13 @@ struct FDecalInfo
 	float DecalFadeOutTime = 5.f;
 };
 
+UENUM()
+enum class EHitRegistrationType : uint8
+{
+	HitScan,
+	Projectile
+};
+
 class UNiagaraSystem;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class DOMAIN_API UWeaponBarrelComponent : public USceneComponent
@@ -30,7 +38,7 @@ class DOMAIN_API UWeaponBarrelComponent : public USceneComponent
 	GENERATED_BODY()
 
 public:
-	void Shot(FVector ShotStart, FVector ShotDirection, AController* Controller, float SpreadAngle) const;
+	void Shot(FVector ShotStart, FVector ShotDirection, float SpreadAngle);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes")
@@ -38,6 +46,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes", meta = (ClampMin = 1, UIMin = 1))
 	int32 BulletsPerShot = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes")
+	EHitRegistrationType HitRegistration = EHitRegistrationType::HitScan;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes", meta = (EditCondition = "HitRegistration == EHitRegistrationType::Projectile"))
+	TSubclassOf<class ABaseProjectile> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes")
 	float BaseDamageAmount = 20.0f;
@@ -58,5 +72,15 @@ protected:
 	TSubclassOf<class UDamageType> DamageTypeClass;
 
 private:
+	float FinalDamage;
+	
+	bool HitScan(FVector ShotStart, FVector ShotDirection, FVector& ShotEnd, FHitResult ShotResult);
+	void LaunchProjectile(const FVector& LaunchStart, const FVector& LaunchDirection);
+
+	UFUNCTION()
+	void ProcessHit(const FHitResult& Hit, const FVector& Direction);
+	
+	APawn* GetOwningPawn() const;
+	AController* GetController() const;
 	FVector GetBulletSpreadOffset(float Angle, FRotator ShotRotation) const;
 };

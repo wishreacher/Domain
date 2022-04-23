@@ -108,7 +108,7 @@ void ARangeWeapon::MakeShot()
 	FVector ViewDirection = PlayerViewRotation.RotateVector(FVector::ForwardVector);
 
 	SetAmmo(Ammo - 1);
-	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, Controller, GetCurrentBulletSpreadAngle());
+	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, GetCurrentBulletSpreadAngle());
 
 	if(Ammo == 0 && bAutoReload)
 	{

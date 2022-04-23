@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Domain/Character/BaseCharacter.h"
+#include "Domain/UI/PlayerHUDWidget.h"
 
 #include "BasePlayerController.generated.h"
 
@@ -21,6 +22,9 @@ public:
 	
 protected:
 	virtual void SetupInputComponent() override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	TSubclassOf<class UPlayerHUDWidget> PlayerHUDWidgetClass;
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -40,6 +44,8 @@ private:
 	void Reload();
 	void NextItem();
 	void PreviousItem();
-	
+
+	UPlayerHUDWidget* PlayerHUDWidget = nullptr;
+	void CreateAndInitializeWidgets();
 	TSoftObjectPtr<class ABaseCharacter> CachedBaseCharacter;
 };
