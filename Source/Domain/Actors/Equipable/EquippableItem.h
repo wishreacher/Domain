@@ -18,6 +18,7 @@ public:
 	FName GetEquippedSocketName() const;
 	FName GetUnEquippedSocketName() const;
 	UAnimMontage* GetCharacterEquipAnimMontage() const;
+	virtual EReticleType GetReticleType() const;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	EEquipableItemType EquippedItemType = EEquipableItemType::None;
@@ -30,4 +31,7 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	UAnimMontage* CharacterEquipAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item|Reticle")
+	EReticleType ReticleType = EReticleType::None;
 };

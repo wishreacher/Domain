@@ -21,6 +21,17 @@ ARangeWeapon::ARangeWeapon()
 	WeaponBarrel->SetupAttachment(WeaponMesh, SocketWeaponMuzzle);
 
 	EquippedSocketName = SocketCharacterWeapon;
+	ReticleType = EReticleType::Default;
+}
+
+EReticleType ARangeWeapon::GetReticleType() const
+{
+	ABaseCharacter* CharacterOwner = Cast<ABaseCharacter>(GetOwner());
+	if(IsValid(CharacterOwner))
+	{
+		return CharacterOwner->GetIsAiming() ? AimReticleType : ReticleType;
+	}
+	return ReticleType;
 }
 
 void ARangeWeapon::BeginPlay()

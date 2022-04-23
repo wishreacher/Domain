@@ -163,7 +163,9 @@ void ABasePlayerController::CreateAndInitializeWidgets()
 		UCrosshairWidget* CrosshairWidget = PlayerHUDWidget->GetCrosshairWidget();
 		if(IsValid(CrosshairWidget))
 		{
+			UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
 			CachedBaseCharacter->OnAimingStateChanged.AddUFunction(CrosshairWidget, FName("OnAimingStateChanged"));
+			CharacterEquipment->OnEquippedItemChanged.AddUFunction(CrosshairWidget, FName("OnEquippedItemChanged"));
 		}
 
 		UAmmoWidget* AmmoWidget = PlayerHUDWidget->GetAmmoWidget();

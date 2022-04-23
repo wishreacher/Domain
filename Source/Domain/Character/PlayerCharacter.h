@@ -35,8 +35,8 @@ public:
 	virtual bool CanJumpInternal_Implementation() const override;
 	virtual void OnJumped_Implementation() override;
 
-	UFUNCTION()
-	void TimelineFloatReturn(float Value) const;
+	// UFUNCTION()
+	// void TimelineFloatReturn(float Value) const;
 	
 	float GetAimTurnModifier() const;
 	float GetAimLookUpModifier() const;
@@ -46,6 +46,12 @@ public:
 
 	UFUNCTION()
 	void OnWeaponReloadBegin();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SetAimCameraFOV();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SetDefaultCameraFOV();
 
 	FORCEINLINE UCameraShakeSourceComponent* GetCameraShakeComponent() const {return CameraShakeComponent;}
 
@@ -59,5 +65,5 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
 	UCameraShakeSourceComponent* CameraShakeComponent = nullptr;
 
-	FTimeline ScopeTimeLine;
+	// FTimeline ScopeTimeLine;
 };

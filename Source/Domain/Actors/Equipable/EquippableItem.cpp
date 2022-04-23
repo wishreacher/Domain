@@ -22,3 +22,8 @@ UAnimMontage* AEquippableItem::GetCharacterEquipAnimMontage() const
 {
 	return CharacterEquipAnimMontage;
 }
+
+EReticleType AEquippableItem::GetReticleType() const
+{
+	return ReticleType;
+}

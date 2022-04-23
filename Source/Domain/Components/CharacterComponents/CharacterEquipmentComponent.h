@@ -12,6 +12,7 @@ typedef TArray<int32, TInlineAllocator<(uint32)EAmmunitionType::MAX>> TAmmunitio
 typedef TArray<class AEquippableItem*, TInlineAllocator<(uint32)EEquipmentSlots::MAX>> TItemsArray;
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCurrentWeaponAmmoChangedEvent, int32, int32)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnEquippedItemChanged, const AEquippableItem*)
 
 class ARangeWeapon;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -27,8 +28,14 @@ public:
 	void OnWeaponReloadComplete();
 
 	FOnCurrentWeaponAmmoChangedEvent OnCurrentWeaponAmmoChangedEvent;
+	FOnEquippedItemChanged OnEquippedItemChanged;
+	
+	UFUNCTION(BlueprintCallable)
 	EEquipableItemType GetCurrentEquippedItem() const;
+
+	UFUNCTION(BlueprintCallable)
 	ARangeWeapon* GetCurrentRangeWeapon() const;
+	
 	void UnEquipCurrentItem();
 	void AttachCurrentItemToEquippedSocket();
 
@@ -52,7 +59,6 @@ protected:
 
 private:
 	bool bIsEquipping = false;
-
 	
 	void CreateLoadout();
 

@@ -42,11 +42,22 @@ public:
 	
 	void StartAim();
 	void StopAim();
+
+	UFUNCTION(BlueprintCallable)
 	float GetAimFOV() const;
+
+	UFUNCTION(BlueprintCallable)
 	float GetAimMovementMaxSpeed() const;
+	
+	UFUNCTION(BlueprintCallable)
 	float GetAimTurnModifier() const;
+
+	UFUNCTION(BlueprintCallable)
 	float GetAimLookUpModifier() const;
+
+	UFUNCTION(BlueprintCallable)
 	UCurveFloat* GetScopeCurve() const;
+	
 	FORCEINLINE bool CanAim() const {return bCanAim;}
 	
 	void StartReload();
@@ -72,6 +83,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
 	USoundBase* BulletReloadSound = nullptr;
+
+	virtual EReticleType GetReticleType() const override;
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -137,6 +151,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon|Parameters|Aiming", meta = (ClampMin = 1, UIMin = 1))
 	int32 MaxAmmo = 30;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Aiming")
+	EReticleType AimReticleType;
 private:
 	float GetCurrentBulletSpreadAngle() const;
 	float PlayAnimMontage(UAnimMontage* Montage) const;

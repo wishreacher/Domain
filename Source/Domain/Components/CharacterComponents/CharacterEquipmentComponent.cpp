@@ -50,7 +50,7 @@ EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItem() const
 
 ARangeWeapon* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 {
-	if(CurrentEquippedWeapon)
+	if(IsValid(CurrentEquippedWeapon))
 	{
 		return Cast<ARangeWeapon>(CurrentEquippedWeapon);
 	}
@@ -116,6 +116,10 @@ void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 		OnCurrentWeaponAmmoChangedHandle = CurrentEquippedWeapon->OnAmmoChanged.AddUFunction(this, FName("CurrentWeaponAmmoChanged"));
 		OnCurrentWeaponReloadedHandle = CurrentEquippedWeapon->OnReloadComplete.AddUFunction(this, FName("OnWeaponReloadComplete"));
 		CurrentWeaponAmmoChanged(CurrentEquippedWeapon->GetAmmo());
+	}
+	if(OnEquippedItemChanged.IsBound())
+	{
+		OnEquippedItemChanged.Broadcast(CurrentEquippedItem);
 	}
 }
 
