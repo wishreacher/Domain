@@ -44,6 +44,8 @@ private:
 	void Reload();
 	void NextItem();
 	void PreviousItem();
+	void PrimaryMeleeAttack();
+	void SecondaryMeleeAttack();
 
 	UPlayerHUDWidget* PlayerHUDWidget = nullptr;
 	void CreateAndInitializeWidgets();

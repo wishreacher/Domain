@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "../../Types.h"
+#include "Domain/Character/BaseCharacter.h"
 #include "GameFramework/Actor.h"
 #include "EquippableItem.generated.h"
 
 class UAnimMontage;
+
 UCLASS()
 class DOMAIN_API AEquippableItem : public AActor
 {
@@ -19,6 +21,8 @@ public:
 	FName GetUnEquippedSocketName() const;
 	UAnimMontage* GetCharacterEquipAnimMontage() const;
 	virtual EReticleType GetReticleType() const;
+	virtual void SetOwner(AActor* NewOwner) override;
+	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	EEquipableItemType EquippedItemType = EEquipableItemType::None;
@@ -34,4 +38,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item|Reticle")
 	EReticleType ReticleType = EReticleType::None;
+
+	ABaseCharacter* GetCharacterOwner() const;
+
+private:
+	ABaseCharacter* CachedCharacterOwner;
 };

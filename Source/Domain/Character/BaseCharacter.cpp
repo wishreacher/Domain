@@ -306,6 +306,24 @@ void ABaseCharacter::PreviousItem()
 	CharacterEquipmentComponent->EquipPreviousItem();
 }
 
+void ABaseCharacter::PrimaryMeleeAttack()
+{
+	AMeleeWeapon* MeleeWeapon = GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
+	if(IsValid(MeleeWeapon))
+	{
+		MeleeWeapon->StartAttack(EMeleeAttackType::PrimaryAttack);
+	}
+}
+
+void ABaseCharacter::SecondaryMeleeAttack()
+{
+	AMeleeWeapon* MeleeWeapon = GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
+	if(IsValid(MeleeWeapon))
+	{
+		MeleeWeapon->StartAttack(EMeleeAttackType::SecondaryAttack);
+	}
+}
+
 void ABaseCharacter::EnableRagdoll()
 {
 	GetMesh()->SetCollisionProfileName(CollisionProfileRagdoll);

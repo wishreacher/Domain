@@ -6,6 +6,7 @@
 #include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 #include "Components/ActorComponent.h"
 #include "Domain/Types.h"
+#include "Domain/Actors/Equipable/Weapons/MeleeWeapon.h"
 #include "CharacterEquipmentComponent.generated.h"
 
 typedef TArray<int32, TInlineAllocator<(uint32)EAmmunitionType::MAX>> TAmmunitionArray;
@@ -47,7 +48,8 @@ public:
 	uint32 NextItemsArraySlotIndex(uint32 CurrentSlotIndex);
 	uint32 PreviousItemsArraySlotIndex(uint32 CurrentSlotIndex);
 
-	bool GetIsEquipping() const;	
+	bool GetIsEquipping() const;
+	FORCEINLINE AMeleeWeapon* GetCurrentMeleeWeapon() const {return CurrentMeleeWeapon;}
 protected:
 	virtual void BeginPlay() override;
 
@@ -79,6 +81,7 @@ private:
 
 	EEquipmentSlots CurrentEquippedSlot;
 	AEquippableItem* CurrentEquippedItem;
-	ARangeWeapon* CurrentEquippedWeapon;
+	ARangeWeapon* CurrentRangeWeapon;
+	AMeleeWeapon* CurrentMeleeWeapon;
 	TWeakObjectPtr<class ABaseCharacter> CachedBaseCharacter;
 };

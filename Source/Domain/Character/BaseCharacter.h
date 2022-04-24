@@ -103,6 +103,9 @@ public:
 
 	void NextItem();
 	void PreviousItem();
+
+	void PrimaryMeleeAttack();
+	void SecondaryMeleeAttack();
 	
 	//-----------------------------------------Getters------------------------------------------
 	FORCEINLINE UBaseCharacterMovementComponent* GetBaseCharacterMovementComponent() const { return BaseCharacterMovementComponent; }

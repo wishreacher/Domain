@@ -27,3 +27,21 @@ EReticleType AEquippableItem::GetReticleType() const
 {
 	return ReticleType;
 }
+
+void AEquippableItem::SetOwner(AActor* NewOwner)
+{
+	Super::SetOwner(NewOwner);
+	if(IsValid(NewOwner))
+	{
+		checkf(GetOwner()->IsA<ABaseCharacter>(), TEXT("AEquippableItem::SetOwner only BaseCharacter can own equipable item"))
+		CachedCharacterOwner = StaticCast<ABaseCharacter*>(GetOwner());
+	} else
+	{
+		CachedCharacterOwner = nullptr;
+	}
+}
+
+ABaseCharacter* AEquippableItem::GetCharacterOwner() const
+{
+	return IsValid(CachedCharacterOwner) ? CachedCharacterOwner : nullptr;
+}
