@@ -59,7 +59,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE TMap<EEquipmentSlots, TSubclassOf<class AEquippableItem>> GetCurrentLoadout() const {return ItemsLoadout;}
-
 	
 	FORCEINLINE EEquipmentSlots GetCurrentEquippedSlot() const {return CurrentEquippedSlot;}
 protected:
