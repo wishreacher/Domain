@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Domain/Types.h"
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
@@ -134,9 +133,6 @@ public:
 
 	UFUNCTION()
 	void EquipMeleeWeapon();
-
-	UFUNCTION()
-	void UnEquipAll();
 	
 protected:
 	//-----------------------------------------MOVEMENT------------------------------------------
@@ -199,7 +195,6 @@ private:
 	bool bCanCrouch = true;
 	bool bIsAiming;
 	bool bIsCrouching = false;
-	EEquipmentSlots PreviousSlot;
 	
 	FTimerHandle DeathMontageTimer;
 	FVector CurrentFallApex;
