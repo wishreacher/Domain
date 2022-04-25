@@ -86,13 +86,18 @@ void ABaseCharacter::Jump()
 
 void ABaseCharacter::ChangeCrouchState()
 {
-	if(BaseCharacterMovementComponent->CanCrouchInCurrentState() && !GetCharacterMovement()->IsCrouching() && !BaseCharacterMovementComponent->bIsOutOfStamina)
+	if(BaseCharacterMovementComponent->CanCrouchInCurrentState() && !GetCharacterMovement()->IsCrouching() && !BaseCharacterMovementComponent->bIsOutOfStamina && !GetCharacterEquipmentComponent()->GetIsEquipping())
 	{
-		
+		PreviousSlot = GetCharacterEquipmentComponent()->GetCurrentEquippedSlot();
+		UnEquipAll();
 		Crouch(true);
+		
 	} else if(GetCharacterMovement()->IsCrouching())
 	{
-		
+		if(IsValid(GetCharacterEquipmentComponent()))
+		{
+			GetCharacterEquipmentComponent()->EquipItemInSlot(PreviousSlot);
+		}
 		UnCrouch(true);
 	}
 }
@@ -164,7 +169,16 @@ bool ABaseCharacter::CanJumpInternal_Implementation() const
 
 void ABaseCharacter::StartSprint()
 {
-	bIsSprintRequested = true;
+	if(GetCharacterEquipmentComponent()->GetIsEquipping())
+	{
+		bIsSprintRequested = false;
+		return;
+	}
+	if(IsValid(GetCharacterEquipmentComponent()))
+	{
+		PreviousSlot = GetCharacterEquipmentComponent()->GetCurrentEquippedSlot();
+		UnEquipAll();
+	}
 	if (bIsCrouched)
 	{
 		UnCrouch(true);
@@ -175,10 +189,15 @@ void ABaseCharacter::StartSprint()
 	}
 	
 	StopAim();
+	bIsSprintRequested = true;
 }
 
 void ABaseCharacter::StopSprint()
 {
+	if(IsValid(GetCharacterEquipmentComponent()))
+	{
+		GetCharacterEquipmentComponent()->EquipItemInSlot(PreviousSlot);
+	}
 	bIsSprintRequested = false;
 }
 
@@ -244,6 +263,7 @@ void ABaseCharacter::StartFire()
 	{
 		return;
 	}
+	UnCrouch(true);
 	ARangeWeapon* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
 	if(CurrentRangeWeapon)
 	{
@@ -433,6 +453,19 @@ void ABaseCharacter::EquipMeleeWeapon()
 		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::MeleeWeapon)))
 	{
 		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::MeleeWeapon);
+	}
+}
+
+void ABaseCharacter::UnEquipAll()
+{
+	if(!IsValid(GetCharacterEquipmentComponent()))
+	{
+		return;
+	}
+	
+	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() != EEquipmentSlots::None)
+	{
+		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::None);
 	}
 }
 

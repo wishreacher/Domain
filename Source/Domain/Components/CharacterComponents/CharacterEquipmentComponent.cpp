@@ -87,6 +87,10 @@ void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 	{
 		return;
 	}
+	if(CachedBaseCharacter->GetIsCrouching())
+	{
+		CachedBaseCharacter->UnCrouch(true);
+	}
 	UnEquipCurrentItem();
 	
 	CurrentEquippedItem = ItemsArray[(uint32)Slot];

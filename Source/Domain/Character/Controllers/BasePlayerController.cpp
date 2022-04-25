@@ -39,6 +39,7 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAction("EquipPrimaryWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipPrimaryWeapon);
 	InputComponent->BindAction("EquipSecondaryWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipSecondaryWeapon);
 	InputComponent->BindAction("EquipMeleeWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipMeleeWeapon);
+	InputComponent->BindAction("UnEquipAll", EInputEvent::IE_Pressed, this, &ABasePlayerController::UnEquipAll);
 }
 
 void ABasePlayerController::MoveForward(float Value)
@@ -199,6 +200,14 @@ void ABasePlayerController::EquipMeleeWeapon()
 	if(CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->EquipMeleeWeapon();
+	}
+}
+
+void ABasePlayerController::UnEquipAll()
+{
+	if(CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->UnEquipAll();
 	}
 }
 

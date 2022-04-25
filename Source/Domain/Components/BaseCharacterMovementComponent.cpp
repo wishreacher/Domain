@@ -214,7 +214,7 @@ void UBaseCharacterMovementComponent::PhysMantling(float DeltaTime, int32 Iterat
 //Range Weapon
 bool UBaseCharacterMovementComponent::CanShotInCurrentState()
 {
-	if(IsMovingOnGround() && UpdatedComponent && !UpdatedComponent->IsSimulatingPhysics() && !IsOutOfStamina() && !IsSprinting())
+	if(IsMovingOnGround() && UpdatedComponent && !UpdatedComponent->IsSimulatingPhysics() && !IsOutOfStamina() && !IsSprinting() && !IsCrouching())
 	{
 		ARangeWeapon* RangeWeapon = GetBaseCharacterOwner()->GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
 		if(IsValid(RangeWeapon))
