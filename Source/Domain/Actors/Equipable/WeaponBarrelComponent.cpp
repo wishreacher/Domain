@@ -11,7 +11,14 @@
 bool UWeaponBarrelComponent::HitScan(FVector ShotStart, FVector ShotDirection,
                                      OUT FVector& ShotEnd, FHitResult ShotResult) 
 {
-	bool bHasHit = GetWorld()->LineTraceSingleByChannel(ShotResult, ShotStart, ShotEnd, ECC_Bullet);
+	FCollisionQueryParams QueryParams = FCollisionQueryParams::DefaultQueryParam;
+	ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if(IsValid(PlayerCharacter))
+	{
+		QueryParams.AddIgnoredActor(PlayerCharacter);
+	}
+	
+	bool bHasHit = GetWorld()->LineTraceSingleByChannel(ShotResult, ShotStart, ShotEnd, ECC_Bullet, QueryParams);
 	if(bHasHit)
 	{
 		ShotEnd = ShotResult.ImpactPoint;

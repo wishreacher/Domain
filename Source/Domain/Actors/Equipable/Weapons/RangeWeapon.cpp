@@ -54,7 +54,7 @@ void ARangeWeapon::StartFire()
 		}
 		bCanShot = false;
 		GetWorld()->GetTimerManager().ClearTimer(CanShootTimer);
-		GetWorld()->GetTimerManager().SetTimer(CanShootTimer, this, &ARangeWeapon::CanShotCallback, CharacterFireHipMontage->GetPlayLength(), false);
+		GetWorld()->GetTimerManager().SetTimer(CanShootTimer, this, &ARangeWeapon::CanShotCallback, GetShotTimerInterval(), false);
 	}
 	MakeShot();
 }

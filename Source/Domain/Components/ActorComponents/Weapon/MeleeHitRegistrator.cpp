@@ -5,6 +5,7 @@
 #include "Domain/Types.h"
 #include "Domain/Actors/Equipable/Weapons/MeleeWeapon.h"
 #include "Domain/Utils/TraceUtils.h"
+#include "Kismet/GameplayStatics.h"
 
 UMeleeHitRegistrator::UMeleeHitRegistrator()
 {
@@ -28,14 +29,20 @@ void UMeleeHitRegistrator::ProcessHit()
 {
 	FVector CurrentLocation = GetComponentLocation();
 	FHitResult HitResult;
-
+	FCollisionQueryParams CollisionQueryParams = FCollisionQueryParams::DefaultQueryParam;
+	ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if(IsValid(PlayerCharacter))
+	{
+		CollisionQueryParams.AddIgnoredActor(PlayerCharacter);
+	}
+	
 	bool bHasHit = TraceUtils::SweepSphereSingleByChanel(GetWorld(),
 		HitResult,
 		PreviousComponentLocation,
 		CurrentLocation,
 		GetScaledSphereRadius(),
 		ECC_Melee,
-		FCollisionQueryParams::DefaultQueryParam,
+		CollisionQueryParams,
 		FCollisionResponseParams::DefaultResponseParam,
 		true,
 		5.f,
