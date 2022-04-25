@@ -77,6 +77,7 @@ public:
 	
 	FTransform GetForeGripTransform() const;
 
+	UFUNCTION(BlueprintNativeEvent)
 	void CanShotCallback();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")

@@ -301,7 +301,7 @@ EAmmunitionType ARangeWeapon::GetAmmoType() const
 	return AmmoType;
 }
 
-void ARangeWeapon::CanShotCallback()
+void ARangeWeapon::CanShotCallback_Implementation()
 {
 	bCanShot = true;
 }
