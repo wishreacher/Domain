@@ -51,6 +51,7 @@ public:
 	uint32 NextItemsArraySlotIndex(uint32 CurrentSlotIndex);
 	uint32 PreviousItemsArraySlotIndex(uint32 CurrentSlotIndex);
 
+	UFUNCTION(BlueprintCallable)
 	bool GetIsEquipping() const;
 
 	UFUNCTION(BlueprintCallable)

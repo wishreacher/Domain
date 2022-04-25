@@ -115,7 +115,10 @@ void ARangeWeapon::MakeShot()
 	}
 	
 	PlayAnimMontage(WeaponFireMontage);
-	UGameplayStatics::PlaySound2D(GetWorld(), FireSound);
+	if(bShouldPlaySound)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), FireSound);
+	}
 
 	FVector PlayerViewPoint;
 	FRotator PlayerViewRotation;
@@ -148,7 +151,10 @@ void ARangeWeapon::StartReload()
 	}
 	StopAim();
 	bCanAim = false;
-	UGameplayStatics::PlaySound2D(GetWorld(), FullReloadSound);
+	if(bShouldPlaySound)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), FullReloadSound);
+	}
 	
 	ABaseCharacter* CharacterOwner = GetCharacterOwner();
 	if(!IsValid(CharacterOwner))

@@ -68,7 +68,7 @@ void UWeaponBarrelComponent::ProcessHit(const FHitResult& Hit, const FVector& Di
 	ARangeWeapon* Weapon = Cast<ARangeWeapon>(GetOwner());
 	if(IsValid(Weapon))
 	{
-		if(IsValid(Weapon->ImpactSound))
+		if(IsValid(Weapon->ImpactSound) && Weapon->bShouldPlaySound)
 		{
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), Weapon->ImpactSound, Hit.Location, FRotator::ZeroRotator, 2.f);
 		}

@@ -14,13 +14,13 @@ struct FDecalInfo
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Decal Info")
 	UMaterialInterface* DecalMaterial;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Decal Info")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Decal Info", meta = (EditCondition = "DecalMaterial != nullptr"))
 	FVector DecalSize = FVector(5.f, 5.f, 5.f);
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Decal Info")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Decal Info", meta = (EditCondition = "DecalMaterial != nullptr"))
 	float DecalLifeTime = 10.f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Decal Info")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Decal Info", meta = (EditCondition = "DecalMaterial != nullptr"))
 	float DecalFadeOutTime = 5.f;
 };
 

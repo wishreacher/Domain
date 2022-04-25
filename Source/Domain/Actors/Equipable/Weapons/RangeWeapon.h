@@ -81,15 +81,18 @@ public:
 	void CanShotCallback();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	bool bShouldPlaySound = true;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound", meta = (EditCondition = "bShouldPlaySound == true"))
 	USoundBase* ImpactSound = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound", meta = (EditCondition = "bShouldPlaySound == true"))
 	USoundBase* FireSound = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound", meta = (EditCondition = "bShouldPlaySound == true"))
 	USoundBase* FullReloadSound = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Parameters|Sound", meta = (EditCondition = "bShouldPlaySound == true"))
 	USoundBase* BulletReloadSound = nullptr;
 
 	virtual EReticleType GetReticleType() const override;
