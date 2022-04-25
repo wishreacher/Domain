@@ -2,7 +2,19 @@
 
 
 #include "Domain/Character/EnemyCharacter.h"
+#include "Components/BoxComponent.h"
 
 
+AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer):
+	Super(ObjectInitializer)
+{
+	TakeDownCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("TakeDownCollision"));
+	TakeDownCollision->InitBoxExtent(FVector(32.f, 32.f, 83.f));
+	TakeDownCollision->SetupAttachment(RootComponent);
+}
 
-
+void AEnemyCharacter::OnDeath()
+{
+	Super::OnDeath();
+	ProcessDeath();
+}
