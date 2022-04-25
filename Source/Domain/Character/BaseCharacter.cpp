@@ -368,6 +368,74 @@ void ABaseCharacter::OnStopAimingInternal()
 	}
 }
 
+void ABaseCharacter::EquipSideArmWeapon()
+{
+	if(!IsValid(GetCharacterEquipmentComponent()))
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::SideArm)
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::SideArm) &&
+		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::SideArm)))
+	{
+		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::SideArm);
+	}
+}
+
+void ABaseCharacter::EquipPrimaryWeapon()
+{
+	if(!IsValid(GetCharacterEquipmentComponent()))
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::PrimaryWeapon)
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::PrimaryWeapon) &&
+		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::PrimaryWeapon)))
+	{
+		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::PrimaryWeapon);
+	}
+}
+
+void ABaseCharacter::EquipSecondaryWeapon()
+{
+	if(!IsValid(GetCharacterEquipmentComponent()))
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::SecondaryWeapon)
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::SecondaryWeapon)&&
+		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::SecondaryWeapon)))
+	{
+		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::SecondaryWeapon);
+	}
+}
+
+void ABaseCharacter::EquipMeleeWeapon()
+{
+	if(!IsValid(GetCharacterEquipmentComponent()))
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::MeleeWeapon)
+	{
+		return;
+	}
+	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::MeleeWeapon)&&
+		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::MeleeWeapon)))
+	{
+		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::MeleeWeapon);
+	}
+}
+
 //Getters
 
 UCharacterAttributeComponent* ABaseCharacter::GetCharacterAttributeComponent() const

@@ -35,6 +35,10 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAction("PreviousItem", EInputEvent::IE_Pressed, this, &ABasePlayerController::PreviousItem);
 	InputComponent->BindAction("PrimaryMeleeAttack", EInputEvent::IE_Pressed, this, &ABasePlayerController::PrimaryMeleeAttack);
 	InputComponent->BindAction("SecondaryMeleeAttack", EInputEvent::IE_Pressed, this, &ABasePlayerController::SecondaryMeleeAttack);
+	InputComponent->BindAction("EquipSideArmWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipSideArmWeapon);
+	InputComponent->BindAction("EquipPrimaryWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipPrimaryWeapon);
+	InputComponent->BindAction("EquipSecondaryWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipSecondaryWeapon);
+	InputComponent->BindAction("EquipMeleeWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipMeleeWeapon);
 }
 
 void ABasePlayerController::MoveForward(float Value)
@@ -163,6 +167,38 @@ void ABasePlayerController::SecondaryMeleeAttack()
 	if(CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->SecondaryMeleeAttack();
+	}
+}
+
+void ABasePlayerController::EquipSideArmWeapon()
+{
+	if(CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->EquipSideArmWeapon();
+	}
+}
+
+void ABasePlayerController::EquipPrimaryWeapon()
+{
+	if(CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->EquipPrimaryWeapon();
+	}
+}
+
+void ABasePlayerController::EquipSecondaryWeapon()
+{
+	if(CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->EquipSecondaryWeapon();
+	}
+}
+
+void ABasePlayerController::EquipMeleeWeapon()
+{
+	if(CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->EquipMeleeWeapon();
 	}
 }
 

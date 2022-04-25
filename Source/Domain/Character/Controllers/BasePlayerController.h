@@ -46,6 +46,10 @@ private:
 	void PreviousItem();
 	void PrimaryMeleeAttack();
 	void SecondaryMeleeAttack();
+	void EquipSideArmWeapon();
+	void EquipPrimaryWeapon();
+	void EquipSecondaryWeapon();
+	void EquipMeleeWeapon();
 
 	UPlayerHUDWidget* PlayerHUDWidget = nullptr;
 	void CreateAndInitializeWidgets();

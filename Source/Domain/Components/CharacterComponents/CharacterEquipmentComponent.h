@@ -50,6 +50,8 @@ public:
 
 	bool GetIsEquipping() const;
 	FORCEINLINE AMeleeWeapon* GetCurrentMeleeWeapon() const {return CurrentMeleeWeapon;}
+	FORCEINLINE TMap<EEquipmentSlots, TSubclassOf<class AEquippableItem>> GetCurrentLoadout() const {return ItemsLoadout;}
+	FORCEINLINE EEquipmentSlots GetCurrentEquippedSlot() const {return CurrentEquippedSlot;}
 protected:
 	virtual void BeginPlay() override;
 

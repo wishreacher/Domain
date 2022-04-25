@@ -121,6 +121,19 @@ public:
 
 	virtual void OnStartAimingInternal();
 	virtual void OnStopAimingInternal();
+
+	UFUNCTION()
+	void EquipSideArmWeapon();
+
+	UFUNCTION()
+	void EquipPrimaryWeapon();
+	
+	UFUNCTION()
+	void EquipSecondaryWeapon();
+
+	UFUNCTION()
+	void EquipMeleeWeapon();
+	
 protected:
 	//-----------------------------------------MOVEMENT------------------------------------------
 	bool CanMantle() const;

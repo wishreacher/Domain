@@ -73,7 +73,6 @@ void UCharacterEquipmentComponent::UnEquipCurrentItem()
 	}
 	
 	CurrentEquippedSlot = EEquipmentSlots::None;
-	
 }
 
 void UCharacterEquipmentComponent::AttachCurrentItemToEquippedSocket()
