@@ -11,27 +11,79 @@ AMeleeWeapon::AMeleeWeapon()
 void AMeleeWeapon::StartAttack(EMeleeAttackType AttackType)
 {
 	ABaseCharacter* CharacterOwner = GetCharacterOwner();
-	if(!IsValid(CharacterOwner))
+	if (!IsValid(CharacterOwner))
 	{
 		return;
 	}
 
-	CurrentAttack =  Attacks.Find(AttackType);
-	if(CurrentAttack && IsValid(CurrentAttack->AttackMontage))
+	HitActors.Empty();
+	CurrentAttack = Attacks.Find(AttackType);
+	if (CurrentAttack && IsValid(CurrentAttack->AttackMontage))
 	{
-		UAnimInstance* AnimInstance = CharacterOwner->GetMesh()->GetAnimInstance();
-		if(IsValid(AnimInstance))
+		UAnimInstance* CharacterAnimInstance = CharacterOwner->GetMesh()->GetAnimInstance();
+		if (IsValid(CharacterAnimInstance))
 		{
-			float Duration = AnimInstance->Montage_Play(CurrentAttack->AttackMontage, 1.f, EMontagePlayReturnType::Duration);
+			float Duration = CharacterAnimInstance->Montage_Play(CurrentAttack->AttackMontage, 1.0f, EMontagePlayReturnType::Duration);
 			GetWorld()->GetTimerManager().SetTimer(AttackTimer, this, &AMeleeWeapon::OnAttackTimerElapsed, Duration, false);
 		}
-	} else
-	{
-		OnAttackTimerElapsed();
+		else
+		{
+			OnAttackTimerElapsed();
+		}
 	}
+}
+
+void AMeleeWeapon::SetIsHitRegistrationEnabled(bool bIsRegistrationEnabled)
+{
+	HitActors.Empty();
+	for (UMeleeHitRegistrator* HitRegistrator : HitRegistrators)
+	{
+		HitRegistrator->SetIsHitRegistrationEnabled(bIsRegistrationEnabled);
+	}
+}
+
+void AMeleeWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+	GetComponents<UMeleeHitRegistrator>(HitRegistrators);
+	for (UMeleeHitRegistrator* HitRegistrator : HitRegistrators)
+	{
+		HitRegistrator->OnMeleeHitRegistered.AddDynamic(this, &AMeleeWeapon::ProcessHit);
+	}
+}
+
+void AMeleeWeapon::ProcessHit(const FHitResult& HitResult, const FVector& HitDirection)
+{
+	if (CurrentAttack == nullptr)
+	{
+		return;
+	}
+
+	AActor* HitActor = HitResult.GetActor();
+	if (!IsValid(HitActor))
+	{
+		return;
+	}
+
+	if (HitActors.Contains(HitActor))
+	{
+		return;
+	}
+
+	FPointDamageEvent DamageEvent;
+	DamageEvent.HitInfo = HitResult;
+	DamageEvent.ShotDirection = HitDirection;
+	DamageEvent.DamageTypeClass = CurrentAttack->DamageType;
+
+	ABaseCharacter* CharacterOwner = GetCharacterOwner();
+	AController* Controller = IsValid(CharacterOwner) ? CharacterOwner->GetController<AController>() : nullptr;
+	HitActor->TakeDamage(CurrentAttack->DamageAmount, DamageEvent, Controller, GetOwner());
+
+	HitActors.Add(HitActor);
 }
 
 void AMeleeWeapon::OnAttackTimerElapsed()
 {
 	CurrentAttack = nullptr;
+	SetIsHitRegistrationEnabled(false);
 }

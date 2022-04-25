@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Domain/Actors/Equipable/EquippableItem.h"
+#include "Domain/Components/ActorComponents/Weapon/MeleeHitRegistrator.h"
 #include "MeleeWeapon.generated.h"
 
 USTRUCT(BlueprintType)
@@ -35,13 +36,22 @@ public:
 
 	void StartAttack(EMeleeAttackType AttackType);
 
+	void SetIsHitRegistrationEnabled(bool bIsRegistrationEnabled);
+	
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee Attack")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee attack")
 	TMap<EMeleeAttackType, FMeleeAttackDescription> Attacks;
 
+	virtual void BeginPlay() override;
+
 private:
+	UFUNCTION()
+	void ProcessHit(const FHitResult& HitResult, const FVector& HitDirection);
+
+	TArray<UMeleeHitRegistrator*> HitRegistrators;
+	TSet<AActor*> HitActors;
+
 	FMeleeAttackDescription* CurrentAttack;
-	
 	void OnAttackTimerElapsed();
 	FTimerHandle AttackTimer;
 };

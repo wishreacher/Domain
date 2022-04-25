@@ -160,17 +160,17 @@ protected:
 
 	virtual void OnOutOfStamina(bool IsOutOfStamina);
 	
-	UPROPERTY(BlueprintReadOnly)
-	UBaseCharacterMovementComponent* BaseCharacterMovementComponent = nullptr;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UBaseCharacterMovementComponent* BaseCharacterMovementComponent;
 	
-	UPROPERTY(BlueprintReadOnly)
-	UCharacterAttributeComponent* CharacterAttributeComponent = nullptr;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UCharacterAttributeComponent* CharacterAttributeComponent;
 	
-	UPROPERTY(BlueprintReadOnly)
-	UCharacterEquipmentComponent* CharacterEquipmentComponent = nullptr;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UCharacterEquipmentComponent* CharacterEquipmentComponent;
 
-	UPROPERTY(BlueprintReadOnly)
-	ULedgeDetectorComponent* LedgeDetectorComponent = nullptr;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	ULedgeDetectorComponent* LedgeDetectorComponent;
 private:
 	void EnableRagdoll();
 	void TryChangeSprintState();

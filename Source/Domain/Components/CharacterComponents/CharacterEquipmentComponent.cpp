@@ -2,7 +2,6 @@
 
 
 #include "CharacterEquipmentComponent.h"
-
 #include "Domain/Types.h"
 #include "Domain/Character/BaseCharacter.h"
 
@@ -38,21 +37,21 @@ void UCharacterEquipmentComponent::CreateLoadout()
 	}
 }
 
-EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItem() const
-{
+EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItem() const{
+
 	EEquipableItemType Result = EEquipableItemType::None;
-	if(IsValid(CurrentRangeWeapon))
+	if (IsValid(CurrentEquippedItem))
 	{
-		Result = CurrentRangeWeapon->GetItemType();
+		Result = CurrentEquippedItem->GetItemType();
 	}
 	return Result;
 }
 
 ARangeWeapon* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 {
-	if(IsValid(CurrentRangeWeapon))
+	if(IsValid(CurrentEquippedItem))
 	{
-		return Cast<ARangeWeapon>(CurrentRangeWeapon);
+		return Cast<ARangeWeapon>(CurrentEquippedItem);
 	}
 	return nullptr;
 }

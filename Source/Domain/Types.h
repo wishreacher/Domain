@@ -2,6 +2,7 @@
 
 #define ECC_Climbing ECC_GameTraceChannel1
 #define ECC_Bullet ECC_GameTraceChannel2
+#define ECC_Melee ECC_GameTraceChannel3
 
 const FName SocketFPCamera = FName("CameraSocket");
 const FName SocketCharacterWeapon = FName("WeaponSocket");
@@ -11,6 +12,7 @@ const FName SocketWeaponForeGrip= FName("ForeGripSocket");
 const FName CollisionProfilePawn = FName("Pawn");
 const FName CollisionProfileRagdoll = FName("Ragdoll");
 const FName CollisionProfilePawnInteractionVolume = FName("PawnInteractionVolume");
+const FName CollisionProfileNoCollision = FName("NoCollision");
 
 const FName DebugCategoryLedgeDetection = FName ("LedgeDetection");
 const FName DebugCategoryCharacterAttributes = FName ("CharacterAttributes");
