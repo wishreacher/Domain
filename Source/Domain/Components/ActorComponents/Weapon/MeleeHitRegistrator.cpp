@@ -44,7 +44,7 @@ void UMeleeHitRegistrator::ProcessHit()
 		ECC_Melee,
 		CollisionQueryParams,
 		FCollisionResponseParams::DefaultResponseParam,
-		true,
+		false,
 		5.f,
 		FColor::Black,
 		FColor::Red
