@@ -54,4 +54,6 @@ private:
 	FMeleeAttackDescription* CurrentAttack;
 	void OnAttackTimerElapsed();
 	FTimerHandle AttackTimer;
+
+	bool bCanAttack = true;
 };

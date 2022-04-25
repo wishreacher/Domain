@@ -15,6 +15,11 @@ void AMeleeWeapon::StartAttack(EMeleeAttackType AttackType)
 	{
 		return;
 	}
+	if(!bCanAttack)
+	{
+		return;
+	}
+	bCanAttack = false;
 
 	HitActors.Empty();
 	CurrentAttack = Attacks.Find(AttackType);
@@ -84,6 +89,7 @@ void AMeleeWeapon::ProcessHit(const FHitResult& HitResult, const FVector& HitDir
 
 void AMeleeWeapon::OnAttackTimerElapsed()
 {
+	bCanAttack = true;
 	CurrentAttack = nullptr;
 	SetIsHitRegistrationEnabled(false);
 }
