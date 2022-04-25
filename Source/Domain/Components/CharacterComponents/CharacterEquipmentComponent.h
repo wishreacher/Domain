@@ -38,8 +38,11 @@ public:
 	ARangeWeapon* GetCurrentRangeWeapon() const;
 	
 	void UnEquipCurrentItem();
+
+	UFUNCTION(BlueprintCallable)
 	void AttachCurrentItemToEquippedSocket();
 
+	UFUNCTION(BlueprintCallable)
 	void EquipItemInSlot(EEquipmentSlots Slot);
 
 	void EquipNextItem();
@@ -49,8 +52,14 @@ public:
 	uint32 PreviousItemsArraySlotIndex(uint32 CurrentSlotIndex);
 
 	bool GetIsEquipping() const;
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE AMeleeWeapon* GetCurrentMeleeWeapon() const {return CurrentMeleeWeapon;}
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE TMap<EEquipmentSlots, TSubclassOf<class AEquippableItem>> GetCurrentLoadout() const {return ItemsLoadout;}
+
+	
 	FORCEINLINE EEquipmentSlots GetCurrentEquippedSlot() const {return CurrentEquippedSlot;}
 protected:
 	virtual void BeginPlay() override;
