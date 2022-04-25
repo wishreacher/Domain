@@ -19,12 +19,15 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ammo")
 	int32 TotalAmmo;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ammo")
+	int32 MaxAmmo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ammo")
 	bool bIsVisible;
 
 private:
 	UFUNCTION()
-	void UpdateAmmoCount(int32 NewAmmo, int32 NewTotalAmmo, int32 MaxAmmo);
+	void UpdateAmmoCount(int32 NewAmmo, int32 NewTotalAmmo, int32 NewMaxAmmo);
 	
 };

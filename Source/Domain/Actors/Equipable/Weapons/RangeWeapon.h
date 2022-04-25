@@ -35,8 +35,7 @@ public:
 	
 	void StartFire();
 	void StopFire();
-	int32 GetAmmo() const;
-	int32 GetMaxAmmo() const;
+	
 	void SetAmmo(int32 NewAmmo);
 	bool CanShoot() const;
 	
@@ -45,6 +44,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetAimFOV() const;
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetAmmo() const;
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetMaxAmmo() const;
 
 	UFUNCTION(BlueprintCallable)
 	float GetAimMovementMaxSpeed() const;
@@ -66,6 +71,8 @@ public:
 	FOnReloadBegin OnReloadBegin;
 	bool GetIsReloading() const;
 	FOnAmmoChanged OnAmmoChanged;
+
+	UFUNCTION(BlueprintCallable)
 	EAmmunitionType GetAmmoType() const;
 	
 	FTransform GetForeGripTransform() const;

@@ -3,15 +3,9 @@
 
 #include "Domain/UI/AmmoWidget.h"
 
-void UAmmoWidget::UpdateAmmoCount(int32 NewAmmo, int32 NewTotalAmmo, int32 MaxAmmo)
+void UAmmoWidget::UpdateAmmoCount(int32 NewAmmo, int32 NewTotalAmmo, int32 NewMaxAmmo)
 {
 	Ammo = NewAmmo;
 	TotalAmmo = NewTotalAmmo;
-	if(NewAmmo == MaxAmmo)
-	{
-		bIsVisible = false;
-	} else
-	{
-		bIsVisible = true;
-	}
+	MaxAmmo = NewMaxAmmo;
 }
