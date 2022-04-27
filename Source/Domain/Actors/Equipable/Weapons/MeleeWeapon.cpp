@@ -2,6 +2,7 @@
 
 
 #include "Domain/Actors/Equipable/Weapons/MeleeWeapon.h"
+#include "Domain/Character/Animations/BaseCharacterAnimInstance.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {
@@ -15,21 +16,17 @@ void AMeleeWeapon::StartAttack(EMeleeAttackType AttackType)
 	{
 		return;
 	}
-	if(!bCanAttack)
-	{
-		return;
-	}
-	bCanAttack = false;
+	CharacterOwner->SetIsAttacking(true);
 
 	HitActors.Empty();
 	CurrentAttack = Attacks.Find(AttackType);
 	if (CurrentAttack && IsValid(CurrentAttack->AttackMontage))
 	{
-		UAnimInstance* CharacterAnimInstance = CharacterOwner->GetMesh()->GetAnimInstance();
+		UBaseCharacterAnimInstance* CharacterAnimInstance = Cast<UBaseCharacterAnimInstance>(CharacterOwner->GetMesh()->GetAnimInstance());
 		if (IsValid(CharacterAnimInstance))
 		{
-			float Duration = CharacterAnimInstance->Montage_Play(CurrentAttack->AttackMontage, 1.0f, EMontagePlayReturnType::Duration);
-			GetWorld()->GetTimerManager().SetTimer(AttackTimer, this, &AMeleeWeapon::OnAttackTimerElapsed, Duration, false);
+			CharacterAnimInstance->PlayComboMontage(AttackType);
+			// GetWorld()->GetTimerManager().SetTimer(AttackTimer, this, &AMeleeWeapon::OnAttackTimerElapsed, Duration, false);
 		}
 		else
 		{
@@ -89,7 +86,8 @@ void AMeleeWeapon::ProcessHit(const FHitResult& HitResult, const FVector& HitDir
 
 void AMeleeWeapon::OnAttackTimerElapsed()
 {
-	bCanAttack = true;
+	ABaseCharacter* CharacterOwner = GetCharacterOwner();
 	CurrentAttack = nullptr;
+	CharacterOwner->SetIsAttacking(false);
 	SetIsHitRegistrationEnabled(false);
 }

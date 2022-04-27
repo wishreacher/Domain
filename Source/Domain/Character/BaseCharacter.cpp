@@ -308,6 +308,12 @@ void ABaseCharacter::PreviousItem()
 
 void ABaseCharacter::PrimaryMeleeAttack()
 {
+	if(bCanAttack == false)
+	{
+		return;
+	}
+	bCanAttack = false;
+	
 	AMeleeWeapon* MeleeWeapon = GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
 	if(IsValid(MeleeWeapon))
 	{
@@ -317,6 +323,11 @@ void ABaseCharacter::PrimaryMeleeAttack()
 
 void ABaseCharacter::SecondaryMeleeAttack()
 {
+	if(bCanAttack == false)
+	{
+		return;
+	}
+	bCanAttack = false;
 	AMeleeWeapon* MeleeWeapon = GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
 	if(IsValid(MeleeWeapon))
 	{

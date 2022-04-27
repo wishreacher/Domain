@@ -92,6 +92,10 @@ void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 	CurrentEquippedItem = ItemsArray[(uint32)Slot];
 	CurrentRangeWeapon = Cast<ARangeWeapon>(CurrentEquippedItem);
 	CurrentMeleeWeapon = Cast<AMeleeWeapon>(CurrentEquippedItem);
+	if(IsValid(CurrentMeleeWeapon))
+	{
+		CachedBaseCharacter->SetCanAttack(true);
+	}
 
 	if(IsValid(CurrentEquippedItem))
 	{

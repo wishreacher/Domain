@@ -15,6 +15,14 @@ class DOMAIN_API UBaseCharacterAnimInstance : public UAnimInstance
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	
+	virtual void PlayComboMontage(EMeleeAttackType AttackType);
+
+	UFUNCTION(BlueprintCallable)
+	virtual void SetDefaultCombos();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void SetNextComboSegment(FName LightCombo, FName HeavyCombo);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character|Animation")
@@ -48,8 +56,20 @@ protected:
 	FTransform ForeGripSocketTransform;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Character|Animation")
-	bool bIsAiming; 
+	bool bIsAiming;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Character|Animation|Combos")
+	UAnimMontage* ComboAttackMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Character|Animation|Combos")
+	FName DefaultLightComboAttack = FName("Light01");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Character|Animation|Combos")
+	FName DefaultHeavyComboAttack = FName("Heavy01");
 private:
+	FName LightComboAttack;
+	FName HeavyComboAttack;
+	
 	TWeakObjectPtr<class ARangeWeapon> Weapon;
 	TWeakObjectPtr<class ABaseCharacter> CachedBaseCharacter;
 };

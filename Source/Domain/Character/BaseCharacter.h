@@ -104,13 +104,18 @@ public:
 	void NextItem();
 	void PreviousItem();
 
+	UFUNCTION(BlueprintCallable)
 	void PrimaryMeleeAttack();
+
+	UFUNCTION(BlueprintCallable)
 	void SecondaryMeleeAttack();
 	
 	//-----------------------------------------Getters------------------------------------------
 	FORCEINLINE UBaseCharacterMovementComponent* GetBaseCharacterMovementComponent() const { return BaseCharacterMovementComponent; }
 	FORCEINLINE bool GetIsSprinting() const {return bIsSprinting;}
 	FORCEINLINE bool GetIsCrouching() const {return bIsCrouching;}
+	FORCEINLINE void SetIsAttacking(bool NewAttacking) {bIsAttacking = NewAttacking;}
+	FORCEINLINE void SetCanAttack(bool NewCanAttack) {bCanAttack = NewCanAttack;}
 
 	UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const;
 	bool GetIsAiming() const;
@@ -193,8 +198,10 @@ private:
 	bool bIsSprintRequested = false;
 	bool bIsSprinting = false;
 	bool bCanCrouch = true;
-	bool bIsAiming;
+	bool bIsAiming = false;
 	bool bIsCrouching = false;
+	bool bIsAttacking = false;
+	bool bCanAttack = true;
 	
 	FTimerHandle DeathMontageTimer;
 	FVector CurrentFallApex;

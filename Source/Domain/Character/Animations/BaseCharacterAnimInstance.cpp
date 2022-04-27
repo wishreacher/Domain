@@ -45,3 +45,39 @@ void UBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		ForeGripSocketTransform = FTransform::Identity;
 	}
 }
+
+void UBaseCharacterAnimInstance::PlayComboMontage(EMeleeAttackType AttackType)
+{
+	if(!IsValid(ComboAttackMontage))
+	{
+		return;
+	}
+	
+	switch(AttackType)
+	{
+	case (uint8)EMeleeAttackType::PrimaryAttack:
+		{
+			CachedBaseCharacter->PlayAnimMontage(ComboAttackMontage, 1, LightComboAttack);
+			break;
+		}
+	case (uint8)EMeleeAttackType::SecondaryAttack:
+		{
+			CachedBaseCharacter->PlayAnimMontage(ComboAttackMontage, 1, HeavyComboAttack);
+			break;
+		}
+	default:
+		break;
+	}
+}
+
+void UBaseCharacterAnimInstance::SetDefaultCombos()
+{
+	LightComboAttack = DefaultLightComboAttack;
+	HeavyComboAttack = DefaultHeavyComboAttack;
+}
+
+void UBaseCharacterAnimInstance::SetNextComboSegment(FName LightCombo, FName HeavyCombo)
+{
+	LightComboAttack = LightCombo;
+	HeavyComboAttack = HeavyCombo;
+}
