@@ -9,6 +9,7 @@ public class Domain : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] { "Niagara" });
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay",
+			"AIOptimizer", "DialoguePlugin", "EasyMultiSave"});
 	}
 }

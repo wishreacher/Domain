@@ -1,0 +1,27 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "AI Optimizer",
+	"Description": "This plugin helps to optimize the game, main purpouse is to optimize AI, but can be used with any Actor",
+	"Category": "Optimization",
+	"CreatedBy": "Grzegorz Szewczyk",
+	"CreatedByURL": "https://ue4dcs.com/AIOptimizer",
+	"DocsURL": "https://ue4dcs.com/AIOptimizer",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/e91ece0a286e463e8a933a6c0edb83ed",
+	"SupportURL": "https://ue4dcs.com/contact",
+	"EngineVersion": "5.0.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "AIOptimizer",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64",
+				"Mac"
+			]
+		}
+	]
+}
