@@ -27,4 +27,7 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* TakeDownCollision;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBoxComponent* TopTakeDownCollision;
 };

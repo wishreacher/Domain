@@ -11,6 +11,10 @@ AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer):
 	TakeDownCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("TakeDownCollision"));
 	TakeDownCollision->InitBoxExtent(FVector(32.f, 32.f, 83.f));
 	TakeDownCollision->SetupAttachment(RootComponent);
+
+	TopTakeDownCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("TopTakeDownCollision"));
+	TopTakeDownCollision->InitBoxExtent(FVector(32.f, 32.f, 83.f));
+	TopTakeDownCollision->SetupAttachment(RootComponent);
 }
 
 void AEnemyCharacter::OnDeath()

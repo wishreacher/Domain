@@ -82,6 +82,8 @@ void AMeleeWeapon::ProcessHit(const FHitResult& HitResult, const FVector& HitDir
 	HitActor->TakeDamage(CurrentAttack->DamageAmount, DamageEvent, Controller, GetOwner());
 
 	HitActors.Add(HitActor);
+
+	DrawDebugSphere(GetWorld(), HitResult.Location, 10.f, 6.f, FColor::Emerald, false, 2.f);
 }
 
 void AMeleeWeapon::OnAttackTimerElapsed()
