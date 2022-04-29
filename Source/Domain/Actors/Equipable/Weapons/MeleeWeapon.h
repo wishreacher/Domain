@@ -23,6 +23,30 @@ struct FMeleeAttackDescription
 	
 };
 
+USTRUCT(BlueprintType)
+struct FTakeDownDescription
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
+	UAnimMontage* PlayerTakeDownMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
+	UAnimMontage* EnemyTakeDownMontage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
+	float BehindOffset = 170.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
+	float LeftOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
+	FName EquippedSocketName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Takedown")
+	ETakeDownType TakeDownType = ETakeDownType::Behind;
+};
+
 /**
  * 
  */
@@ -41,6 +65,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee attack")
 	TMap<EMeleeAttackType, FMeleeAttackDescription> Attacks;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Takedown")
+	TArray<FTakeDownDescription> TakeDowns;
 
 	virtual void BeginPlay() override;
 

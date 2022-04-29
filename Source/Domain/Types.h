@@ -71,3 +71,12 @@ enum class EMeleeAttackType : uint8
 	SecondaryAttack,
 	MAX UMETA(Hidden)
 };
+
+UENUM(Blueprintable)
+enum class ETakeDownType : uint8
+{
+	None,
+	Behind,
+	Top,
+	MAX UMETA(Hidden)
+};
