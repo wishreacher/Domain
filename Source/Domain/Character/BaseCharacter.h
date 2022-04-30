@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 #include "BaseCharacter.generated.h"
 
 USTRUCT(BlueprintType)
@@ -83,6 +84,8 @@ public:
 	 *	3) Plays selected montage.
 	 */
 	virtual void Mantle(bool bForce);
+
+	FORCEINLINE void SetTimeDilation(float NewDilation){UGameplayStatics::SetGlobalTimeDilation(GetWorld(), NewDilation);}
 	
 	//-----------------------------------------Range Weapon------------------------------------------
 	void StartFire();
