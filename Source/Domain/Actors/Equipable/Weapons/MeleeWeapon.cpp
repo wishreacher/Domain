@@ -2,6 +2,9 @@
 
 
 #include "Domain/Actors/Equipable/Weapons/MeleeWeapon.h"
+
+#include "Camera/CameraShakeSourceComponent.h"
+#include "Domain/Character/PlayerCharacter.h"
 #include "Domain/Character/Animations/BaseCharacterAnimInstance.h"
 
 AMeleeWeapon::AMeleeWeapon()
@@ -84,6 +87,11 @@ void AMeleeWeapon::ProcessHit(const FHitResult& HitResult, const FVector& HitDir
 	HitActors.Add(HitActor);
 
 	DrawDebugSphere(GetWorld(), HitResult.Location, 10.f, 6.f, FColor::Emerald, false, 2.f);
+
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(CharacterOwner);
+	PlayerCharacter->GetCameraShakeComponent()->CameraShake = AttackCameraShake;
+	PlayerCharacter->GetCameraShakeComponent()->Start();
+	
 }
 
 void AMeleeWeapon::OnAttackTimerElapsed()

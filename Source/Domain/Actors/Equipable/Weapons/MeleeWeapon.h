@@ -66,6 +66,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee attack")
 	TMap<EMeleeAttackType, FMeleeAttackDescription> Attacks;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee attack")
+	TSubclassOf<UCameraShakeBase> AttackCameraShake;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Takedown")
 	TArray<FTakeDownDescription> TakeDowns;
 

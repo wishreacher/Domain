@@ -15,6 +15,7 @@ void UAnimNotify_AddCameraShake::Notify(USkeletalMeshComponent* MeshComp, UAnimS
 	APlayerCharacter* Player = Cast<APlayerCharacter>(MeshComp->GetOwner());
 	if(IsValid(Player))
 	{
+		Player->GetCameraShakeComponent()->CameraShake = CameraShake;
 		Player->GetCameraShakeComponent()->Start();
 	}
 	
