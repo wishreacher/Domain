@@ -16,7 +16,7 @@ struct FMeleeAttackDescription
 	UAnimMontage* AttackMontage;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Melee Attack")
-	TSubclassOf<class UDamageType> DamageType;
+	TSubclassOf<UDamageType> DamageType;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Melee Attack", meta = (ClampMin = 0.f, UIMin = 0.f))
 	float DamageAmount = 50.f;
