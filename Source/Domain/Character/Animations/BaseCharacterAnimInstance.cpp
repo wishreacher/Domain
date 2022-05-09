@@ -48,7 +48,8 @@ void UBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UBaseCharacterAnimInstance::PlayComboMontage(EMeleeAttackType AttackType)
 {
-	if(!IsValid(ComboAttackMontage))
+	UAnimMontage* ComboMontage = CachedBaseCharacter->GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon()->GetCurrentAttack()->AttackMontage;
+	if(!IsValid(ComboMontage))
 	{
 		return;
 	}
@@ -57,12 +58,12 @@ void UBaseCharacterAnimInstance::PlayComboMontage(EMeleeAttackType AttackType)
 	{
 	case (uint8)EMeleeAttackType::PrimaryAttack:
 		{
-			CachedBaseCharacter->PlayAnimMontage(ComboAttackMontage, 1, LightComboAttack);
+			CachedBaseCharacter->PlayAnimMontage(ComboMontage,1, LightComboAttack);
 			break;
 		}
 	case (uint8)EMeleeAttackType::SecondaryAttack:
 		{
-			CachedBaseCharacter->PlayAnimMontage(ComboAttackMontage, 1, HeavyComboAttack);
+			CachedBaseCharacter->PlayAnimMontage(ComboMontage, 1, HeavyComboAttack);
 			break;
 		}
 	default:

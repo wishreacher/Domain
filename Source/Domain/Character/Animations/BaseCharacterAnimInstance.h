@@ -59,9 +59,6 @@ protected:
 	bool bIsAiming;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Character|Animation|Combos")
-	UAnimMontage* ComboAttackMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Character|Animation|Combos")
 	FName DefaultLightComboAttack = FName("Light01");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Character|Animation|Combos")

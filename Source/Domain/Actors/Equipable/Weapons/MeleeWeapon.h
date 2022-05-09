@@ -61,6 +61,8 @@ public:
 	void StartAttack(EMeleeAttackType AttackType);
 
 	void SetIsHitRegistrationEnabled(bool bIsRegistrationEnabled);
+
+	FORCEINLINE FMeleeAttackDescription* GetCurrentAttack() const {return CurrentAttack;}
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee attack")

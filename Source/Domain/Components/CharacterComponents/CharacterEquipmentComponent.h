@@ -10,7 +10,7 @@
 #include "CharacterEquipmentComponent.generated.h"
 
 typedef TArray<int32, TInlineAllocator<(uint32)EAmmunitionType::MAX>> TAmmunitionArray;
-typedef TArray<class AEquippableItem*, TInlineAllocator<(uint32)EEquipmentSlots::MAX>> TItemsArray;
+typedef TArray<AEquippableItem*, TInlineAllocator<(uint32)EEquipmentSlots::MAX>> TItemsArray;
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCurrentWeaponAmmoChangedEvent, int32, int32)
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnEquippedItemChanged, const AEquippableItem*)
@@ -58,9 +58,11 @@ public:
 	FORCEINLINE AMeleeWeapon* GetCurrentMeleeWeapon() const {return CurrentMeleeWeapon;}
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE TMap<EEquipmentSlots, TSubclassOf<class AEquippableItem>> GetCurrentLoadout() const {return ItemsLoadout;}
+	FORCEINLINE TMap<EEquipmentSlots, TSubclassOf<AEquippableItem>> GetCurrentLoadout() const {return ItemsLoadout;}
 	
 	FORCEINLINE EEquipmentSlots GetCurrentEquippedSlot() const {return CurrentEquippedSlot;}
+
+	FORCEINLINE AEquippableItem* GetCurrentSecondHandWeapon() const {return CurrentSecondHandWeapon;}
 protected:
 	virtual void BeginPlay() override;
 
@@ -68,7 +70,7 @@ protected:
 	TMap<EAmmunitionType, int32> MaxAmmunitionAmount;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loadout")
-	TMap<EEquipmentSlots, TSubclassOf<class AEquippableItem>> ItemsLoadout;
+	TMap<EEquipmentSlots, TSubclassOf<AEquippableItem>> ItemsLoadout;
 
 private:
 	bool bIsEquipping = false;
@@ -94,5 +96,6 @@ private:
 	AEquippableItem* CurrentEquippedItem;
 	ARangeWeapon* CurrentRangeWeapon;
 	AMeleeWeapon* CurrentMeleeWeapon;
-	TWeakObjectPtr<class ABaseCharacter> CachedBaseCharacter;
+	AEquippableItem* CurrentSecondHandWeapon;
+	TWeakObjectPtr<ABaseCharacter> CachedBaseCharacter;
 };

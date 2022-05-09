@@ -28,7 +28,10 @@ enum class EEquipableItemType : uint8
 	None,
 	Pistol,
 	Rifle,
-	Melee,
+	SingleDagger,
+	DualDaggers,
+	DualSword,
+	Rapier,
 	MAX UMETA(Hidden)
 };
 
@@ -38,7 +41,7 @@ enum class EAmmunitionType : uint8
 	None,
 	Pistol,
 	Rifle,
-	ShotgunShellss,
+	ShotgunShells,
 	SniperRifleBullets,
 	MAX UMETA(Hidden)
 };

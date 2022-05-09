@@ -19,6 +19,9 @@ public:
 	EEquipableItemType GetItemType() const;
 	FName GetEquippedSocketName() const;
 	FName GetUnEquippedSocketName() const;
+	FName GetSecondHandEquippedSocketName() const;
+	FName GetSecondHandUnEquippedSocketName() const;
+	bool GetIsDual() const;
 	UAnimMontage* GetCharacterEquipAnimMontage() const;
 	virtual EReticleType GetReticleType() const;
 	virtual void SetOwner(AActor* NewOwner) override;
@@ -32,6 +35,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	FName EquippedSocketName = NAME_None;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
+	bool bIsWeaponDual = false;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item", meta=(EditCondition = "bIsWeaponDual == true"))
+	FName SecondHandEquippedSocketName = NAME_None;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item", meta=(EditCondition = "bIsWeaponDual == true"))
+	FName SecondHandUnEquippedSocketName = NAME_None;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	UAnimMontage* CharacterEquipAnimMontage;

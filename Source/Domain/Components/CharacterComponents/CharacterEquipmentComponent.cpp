@@ -18,11 +18,15 @@ void UCharacterEquipmentComponent::BeginPlay()
 void UCharacterEquipmentComponent::CreateLoadout()
 {
 	AmmunitionArray.AddZeroed((uint32)EAmmunitionType::MAX);
-	for(const TPair<EAmmunitionType, int32>& AmmoPair : MaxAmmunitionAmount)
-	{
-		AmmunitionArray[(uint32)AmmoPair.Key] = FMath::Max(AmmoPair.Value, 0);
-	}
 
+	if(!MaxAmmunitionAmount.IsEmpty())
+	{
+		for(const TPair<EAmmunitionType, int32>& AmmoPair : MaxAmmunitionAmount)
+		{
+			AmmunitionArray[(uint32)AmmoPair.Key] = FMath::Max(AmmoPair.Value, 0);
+		}
+	}
+	
 	ItemsArray.AddZeroed((uint32)EEquipmentSlots::MAX);
 	for(const TPair<EEquipmentSlots, TSubclassOf<AEquippableItem>>& ItemPair : ItemsLoadout)
 	{
@@ -34,6 +38,13 @@ void UCharacterEquipmentComponent::CreateLoadout()
 		Item->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, Item->GetUnEquippedSocketName());
 		Item->SetOwner(CachedBaseCharacter.Get());
 		ItemsArray[(uint32)ItemPair.Key] = Item;
+
+		if(IsValid(Item) && Item->GetIsDual())
+		{
+			CurrentSecondHandWeapon = GetWorld()->SpawnActor<AEquippableItem>(Item->GetClass());
+			CurrentSecondHandWeapon->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, Item->GetSecondHandUnEquippedSocketName());
+			CurrentSecondHandWeapon->SetOwner(CachedBaseCharacter.Get());
+		}
 	}
 }
 
@@ -62,6 +73,11 @@ void UCharacterEquipmentComponent::UnEquipCurrentItem()
 	{
 		CurrentEquippedItem->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
 		                                       CurrentEquippedItem->GetUnEquippedSocketName());
+		if(CurrentEquippedItem->GetIsDual() && IsValid(CurrentSecondHandWeapon))
+		{
+			CurrentSecondHandWeapon->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
+											   CurrentEquippedItem->GetSecondHandUnEquippedSocketName());
+		}
 	}
 	
 	if(IsValid(CurrentRangeWeapon))
@@ -79,6 +95,11 @@ void UCharacterEquipmentComponent::AttachCurrentItemToEquippedSocket()
 {
 	CurrentEquippedItem->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
 	                                       CurrentEquippedItem->GetEquippedSocketName());
+	if(CurrentEquippedItem->GetIsDual() && IsValid(CurrentSecondHandWeapon))
+	{
+		CurrentSecondHandWeapon->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,
+										   CurrentEquippedItem->GetSecondHandEquippedSocketName());
+	}
 }
 
 void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)

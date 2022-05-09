@@ -18,5 +18,11 @@ void UAnimNotify_SetMelleHitRegEnabled::Notify(USkeletalMeshComponent* MeshComp,
 	if(IsValid(MeleeWeapon))
 	{
 		MeleeWeapon->SetIsHitRegistrationEnabled(bIsHitRegistrationEnabled);
+
+		AMeleeWeapon* SecondHandMeleeWeapon = Cast<AMeleeWeapon>(CharacterOwner->GetCharacterEquipmentComponent()->GetCurrentSecondHandWeapon());
+		if(IsValid(SecondHandMeleeWeapon))
+		{
+			SecondHandMeleeWeapon->SetIsHitRegistrationEnabled(bIsHitRegistrationEnabled);
+		}
 	}
 }

@@ -18,6 +18,21 @@ FName AEquippableItem::GetUnEquippedSocketName() const
 	return UnEquippedSocketName;
 }
 
+FName AEquippableItem::GetSecondHandEquippedSocketName() const
+{
+	return SecondHandEquippedSocketName;
+}
+
+FName AEquippableItem::GetSecondHandUnEquippedSocketName() const
+{
+	return SecondHandUnEquippedSocketName;
+}
+
+bool AEquippableItem::GetIsDual() const
+{
+	return bIsWeaponDual;
+}
+
 UAnimMontage* AEquippableItem::GetCharacterEquipAnimMontage() const
 {
 	return CharacterEquipAnimMontage;
