@@ -33,6 +33,10 @@ struct FTakeDownDescription
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
 	UAnimMontage* EnemyTakeDownMontage;
+
+	//Make sure to use a child of class BP_CameraRig_Base here, it won't work without it
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
+	TSubclassOf<AActor> CameraMovement;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
 	float BehindOffset = 170.f;

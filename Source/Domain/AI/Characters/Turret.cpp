@@ -2,8 +2,8 @@
 
 
 #include "Domain/AI/Characters/Turret.h"
-
 #include "Domain/Actors/Equipable/WeaponBarrelComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ATurret::ATurret()
@@ -34,6 +34,7 @@ void ATurret::Tick(float DeltaTime)
 			FiringMovement(DeltaTime);
 			break;
 	}
+	// UKismetSystemLibrary::PrintString(this, UEnum::GetDisplayValueAsText(CurrentState).ToString());
 }
 
 void ATurret::SetCurrentTarget(AActor* NewTarget)
@@ -41,6 +42,17 @@ void ATurret::SetCurrentTarget(AActor* NewTarget)
 	CurrentTarget = NewTarget;
 	ETurretState NewState = IsValid(CurrentTarget) ? ETurretState::Firing : ETurretState::Searching;
 	SetCurrentTurretState(NewState);
+	// UKismetSystemLibrary::PrintString(this, NewTarget->GetName());
+}
+
+FVector ATurret::GetPawnViewLocation() const
+{
+	return WeaponBarrelComponent->GetComponentLocation();
+}
+
+FRotator ATurret::GetViewRotation() const
+{
+	return WeaponBarrelComponent->GetComponentRotation();
 }
 
 void ATurret::SearchingMovement(float DeltaTime)
@@ -56,5 +68,16 @@ void ATurret::SearchingMovement(float DeltaTime)
 
 void ATurret::FiringMovement(float DeltaTime)
 {
+	FVector BaseLookAtDirection = (CurrentTarget->GetActorLocation() - TurretBaseComponent->GetComponentLocation()).GetSafeNormal2D();
+	FQuat LookAtQuat = BaseLookAtDirection.ToOrientationQuat();
+	FQuat TargetQuat = FMath::QInterpTo(TurretBaseComponent->GetComponentQuat(), LookAtQuat, DeltaTime, BaseFiringInterpSpeed);
+	TurretBaseComponent->SetWorldRotation(TargetQuat);
+
+	FVector BarrelLookAtDirection = (CurrentTarget->GetActorLocation() - TurretBarrelComponent->GetComponentLocation()).GetSafeNormal();
+	float BarrelLookAtPitchAngle = BarrelLookAtDirection.ToOrientationRotator().Pitch;
+	
+	FRotator BarrelLocalRotation = TurretBarrelComponent->GetRelativeRotation();
+	BarrelLocalRotation.Pitch = FMath::FInterpTo(BarrelLocalRotation.Pitch, BarrelLookAtPitchAngle, DeltaTime, BarrelPitchRotationRate);
+	TurretBarrelComponent->SetWorldRotation(BarrelLocalRotation);
 	
 }

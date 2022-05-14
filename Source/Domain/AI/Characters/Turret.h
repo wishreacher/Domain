@@ -23,6 +23,8 @@ public:
 	ATurret();
 	virtual void Tick(float DeltaTime) override;
 	void SetCurrentTarget(AActor* NewTarget);
+	virtual FVector GetPawnViewLocation() const override;
+	virtual FRotator GetViewRotation() const override;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* TurretBaseComponent;
@@ -44,6 +46,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TurretParameters")
 	float MinBarrelPitchRotationRate = -30.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TurretParameters")
+	float BaseFiringInterpSpeed = 5.f;
 
 private:
 	void SearchingMovement(float DeltaTime);
