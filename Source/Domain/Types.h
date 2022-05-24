@@ -30,8 +30,6 @@ enum class EEquipableItemType : uint8
 	Rifle,
 	SingleDagger,
 	DualDaggers,
-	DualSword,
-	Rapier,
 	MAX UMETA(Hidden)
 };
 
