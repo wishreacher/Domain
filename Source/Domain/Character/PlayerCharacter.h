@@ -26,6 +26,8 @@ public:
 	virtual void LookUp(float Value) override;
 	virtual void TurnAtRate(float Value) override;
 	virtual void LookUpAtRate(float Value) override;
+	virtual void StartSprint() override;
+	virtual void StopSprint() override;
 
 	virtual void OnDeath() override;
 	
@@ -64,6 +66,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
 	UCameraShakeSourceComponent* CameraShakeComponent = nullptr;
+
+private:
+	TSubclassOf<UCameraShakeBase> CurrentCameraShakeClass;
 
 	// FTimeline ScopeTimeLine;
 };

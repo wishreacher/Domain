@@ -12,6 +12,7 @@ void UAnimNotifyState_CanAttack::NotifyBegin(USkeletalMeshComponent* MeshComp, U
 	if(IsValid(Character))
 	{
 		Character->SetCanAttack(false);
+		// Character->GetBaseCharacterMovementComponent()->DisableMovement();
 	}
 }
 
@@ -23,5 +24,6 @@ void UAnimNotifyState_CanAttack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAn
 	if(IsValid(Character))
 	{
 		Character->SetCanAttack(true);
+		// Character->GetBaseCharacterMovementComponent()->SetMovementMode(MOVE_Walking);
 	}
 }

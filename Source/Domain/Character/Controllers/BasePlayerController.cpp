@@ -45,6 +45,10 @@ void ABasePlayerController::MoveForward(float Value)
 {
 	if(CachedBaseCharacter.IsValid())
 	{
+		if(Value < 0)
+		{
+			CachedBaseCharacter->StopSprint();
+		}
 		CachedBaseCharacter->MoveForward(Value);
 	}
 }

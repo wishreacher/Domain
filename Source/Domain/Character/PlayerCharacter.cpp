@@ -63,6 +63,10 @@ void APlayerCharacter::MoveForward(float Value)
 
 void APlayerCharacter::MoveRight(float Value)
 {
+	if(GetIsSprinting())
+	{
+		return;
+	}
 	if(GetCharacterMovement()->IsMovingOnGround() || GetCharacterMovement()->IsFalling() && !FMath::IsNearlyZero(Value, 1e-6f))
 	{
 		FRotator YawRotator(0.0f, GetControlRotation().Yaw, 0.0f );
@@ -74,11 +78,16 @@ void APlayerCharacter::MoveRight(float Value)
 void APlayerCharacter::Turn(float Value)
 {
 	float AimTurnModifier = 1.f;
+	float SprintTurnModifier = 1.f;
 	if(IsValid(GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()) && GetIsAiming())
 	{
 		AimTurnModifier = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->GetAimTurnModifier();
 	}
-	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds() * AimTurnModifier);
+	if(GetIsSprinting())
+	{
+		SprintTurnModifier = GetBaseCharacterMovementComponent()->GetSprintTurnRate();
+	}
+	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds() * AimTurnModifier * SprintTurnModifier);
 }
 
 void APlayerCharacter::LookUp(float Value)
@@ -110,6 +119,20 @@ void APlayerCharacter::LookUpAtRate(float Value)
 	}
 	
 	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * AimLookUpModifier);
+}
+
+void APlayerCharacter::StartSprint()
+{
+	Super::StartSprint();
+	CurrentCameraShakeClass = GetBaseCharacterMovementComponent()->GetSprintCameraShake();
+	GetCameraShakeComponent()->CameraShake = CurrentCameraShakeClass;
+	CameraShakeComponent->Start();
+}
+
+void APlayerCharacter::StopSprint()
+{
+	Super::StopSprint();
+	GetCameraShakeComponent()->StopAllCameraShakesOfType(CurrentCameraShakeClass, true);
 }
 
 void APlayerCharacter::OnDeath()

@@ -13,13 +13,13 @@ struct FMantlingSettings
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class UAnimMontage* MantlingMontage;
+	UAnimMontage* MantlingMontage;
 
 	/** Adding curve slot.
 	 * This curve defines duration of an animation states. If you need to change delay after mantling, you should modify this one
 	 */ 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class UCurveVector* MantlingCurve;
+	UCurveVector* MantlingCurve;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0.0f, UIMin = 0.0f))
 	float MaxHeight = 200.0f;
@@ -115,9 +115,12 @@ public:
 	
 	//-----------------------------------------Getters------------------------------------------
 	FORCEINLINE UBaseCharacterMovementComponent* GetBaseCharacterMovementComponent() const { return BaseCharacterMovementComponent; }
-	FORCEINLINE bool GetIsSprinting() const {return bIsSprinting;}
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetIsSprinting() const {return bIsSprintRequested;}
 	FORCEINLINE bool GetIsCrouching() const {return bIsCrouching;}
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetIsAttacking(bool NewAttacking) {bIsAttacking = NewAttacking;}
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetCanAttack(bool NewCanAttack) {bCanAttack = NewCanAttack;}
 
 	UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const;
@@ -199,7 +202,6 @@ private:
 	float DefaultMaxMovementSpeed = 0.0f;
 	float CurrentAimingMovementSpeed = 0.f;
 	bool bIsSprintRequested = false;
-	bool bIsSprinting = false;
 	bool bCanCrouch = true;
 	bool bIsAiming = false;
 	bool bIsCrouching = false;

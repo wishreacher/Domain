@@ -73,12 +73,6 @@ void UWeaponBarrelComponent::ProcessHit(const FHitResult& Hit, const FVector& Di
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), Weapon->ImpactSound, Hit.Location, FRotator::ZeroRotator, 2.f);
 		}
 	}
-
-	if(IsValid(TraceFX))
-	{
-		UNiagaraComponent* TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceFX,  GetComponentLocation(), GetComponentRotation());
-		TraceFXComponent->SetVectorParameter(FXParamTraceEnd, Hit.ImpactPoint);
-	}
 	
 	if(IsValid(HitActor))
 	{
@@ -122,7 +116,11 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, floa
 				break;
 			}
 		}
-		
+		if(IsValid(TraceFX))
+		{
+			UNiagaraComponent* TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceFX,  GetComponentLocation(), GetComponentRotation());
+			TraceFXComponent->SetVectorParameter(FXParamTraceEnd, ShotEnd);
+		}
 		if(bIsDebugEnabled)
 		{
 			DrawDebugLine(GetWorld(), MuzzleLocation, ShotEnd, FColor::Red, false, 1.0f, 0, 3.0f);

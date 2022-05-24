@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Domain/Character/BaseCharacter.h"
-
 #include "BaseCharacterMovementComponent.generated.h"
 
 struct FMantlingMovementParameters
@@ -68,12 +67,20 @@ public:
 
 	FORCEINLINE bool IsSprinting() const {return bIsSprinting;}
 	FORCEINLINE bool IsOutOfStamina() const { return bIsOutOfStamina;}
+	FORCEINLINE float GetSprintTurnRate() const { return SprintTurnRate;}
+	FORCEINLINE TSubclassOf<UCameraShakeBase> GetSprintCameraShake() const {return SprintCameraShake;}
 protected:
 	virtual void PhysCustom(float DeltaTime, int32 Iterations) override;
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
 	float SprintSpeed = 1200.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 1.f, UIMax = 1.f))
+	float SprintTurnRate = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement")
+	TSubclassOf<UCameraShakeBase> SprintCameraShake;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Chatacter|Movement", meta = (ClampMin = 0.0f, UIMin = 0.0f))
 	float OutOfStaminaSpeed = 200.0f;

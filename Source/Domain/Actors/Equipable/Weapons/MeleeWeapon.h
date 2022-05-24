@@ -39,10 +39,7 @@ struct FTakeDownDescription
 	TSubclassOf<AActor> CameraMovement;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
-	float BehindOffset = 170.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
-	float LeftOffset;
+	FVector Offset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Takedown")
 	FName EquippedSocketName;
