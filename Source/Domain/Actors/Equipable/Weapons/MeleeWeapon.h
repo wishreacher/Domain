@@ -64,6 +64,7 @@ public:
 	void SetIsHitRegistrationEnabled(bool bIsRegistrationEnabled);
 
 	FORCEINLINE FMeleeAttackDescription* GetCurrentAttack() const {return CurrentAttack;}
+	FORCEINLINE TArray<FTakeDownDescription> GetTakeDowns() const {return TakeDowns;}
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Melee attack")

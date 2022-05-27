@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BaseCharacter.h"
 #include "Components/TimelineComponent.h"
+#include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 #include "PlayerCharacter.generated.h"
 
 /**
@@ -28,6 +29,8 @@ public:
 	virtual void LookUpAtRate(float Value) override;
 	virtual void StartSprint() override;
 	virtual void StopSprint() override;
+	virtual void StartTakeDown() override;
+	void ExecuteTakeDown(ETakeDownType Type, AActor* Target);
 
 	virtual void OnDeath() override;
 	
@@ -56,6 +59,45 @@ public:
 	void SetDefaultCameraFOV();
 
 	FORCEINLINE UCameraShakeSourceComponent* GetCameraShakeComponent() const {return CameraShakeComponent;}
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetShouldExecuteBehindTakeDown() const {return bShouldExecuteBehindTakeDown;}
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetShouldExecuteTopTakeDown() const {return bShouldExecuteTopTakeDown;}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetShouldExecuteBehindCooldown(bool bNewShouldExecute) {bShouldExecuteBehindTakeDown = bNewShouldExecute;}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetShouldExecuteTopCooldown(bool bNewShouldExecute) {bShouldExecuteTopTakeDown = bNewShouldExecute;}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetBehindTakeDownTarget(AActor* NewBehindTakeDownTarget) {BehindTakeDownTarget = NewBehindTakeDownTarget;}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetTopTakeDownTarget(AActor* NewTopTakeDownTarget) {TopTakeDownTarget = NewTopTakeDownTarget;}
+
+	bool CanExecuteTakeDown() const;
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleControls(bool bShouldEnableControl);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetupTarget();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void MoveToTakeDownTarget(AActor* TargetActor, FVector Offset);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayTakeDownMontages(FTakeDownDescription TakeDownDescription);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void EnemyTakeDownInterfaceCall(AActor* Target, FTakeDownDescription TakeDown);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void TakeDownCameraRigActivation(FTakeDownDescription TakeDown);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void TakeDownEnd();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character|Camera")
@@ -70,5 +112,13 @@ protected:
 private:
 	TSubclassOf<UCameraShakeBase> CurrentCameraShakeClass;
 
+	bool bIsExecutingTakeDown;
+	bool bShouldExecuteBehindTakeDown;
+	bool bShouldExecuteTopTakeDown;
+
+	FTimerHandle TakeDownTimerHandle;
+	
+	AActor* BehindTakeDownTarget;
+	AActor* TopTakeDownTarget;
 	// FTimeline ScopeTimeLine;
 };

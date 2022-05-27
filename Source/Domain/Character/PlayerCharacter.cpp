@@ -135,6 +135,102 @@ void APlayerCharacter::StopSprint()
 	GetCameraShakeComponent()->StopAllCameraShakesOfType(CurrentCameraShakeClass, true);
 }
 
+bool APlayerCharacter::CanExecuteTakeDown() const
+{
+	//TODO check if the weapon has corresponding takedowns
+	// AMeleeWeapon* WeaponRef = Cast<AMeleeWeapon>(GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::MeleeWeapon));
+	return !GetCharacterEquipmentComponent()->GetIsEquipping() && !bIsExecutingTakeDown;
+}
+
+void APlayerCharacter::ToggleControls(bool bShouldEnableControl)
+{
+	GetBaseCharacterMovementComponent()->SetActive(bShouldEnableControl);
+	CameraComponent->bUsePawnControlRotation = bShouldEnableControl;
+	SpringArmComponent->bUsePawnControlRotation = bShouldEnableControl;
+	bUseControllerRotationYaw = bShouldEnableControl;
+}
+
+void APlayerCharacter::StartTakeDown()
+{
+	if(!CanExecuteTakeDown()) //checking if we can fire a takedown or not
+	{
+		return;
+	}
+	
+	UCharacterEquipmentComponent* EquipmentComponent = GetCharacterEquipmentComponent();
+	if(!IsValid(EquipmentComponent))
+	{
+		return;
+	}
+	
+	if(EquipmentComponent->GetCurrentEquippedSlot() != EEquipmentSlots::MeleeWeapon) //equipping the melee weapon if it's not
+	{
+		EquipmentComponent->EquipItemInSlot(EEquipmentSlots::MeleeWeapon);
+	}
+
+	if(!GetBaseCharacterMovementComponent()->IsCrouching()) //crouching if we aren't
+	{
+		Crouch(true);
+	}
+
+	
+	if(GetShouldExecuteBehindTakeDown()) //executing takedown
+	{
+		SetupTarget(); //TODO move the trace to c++
+		if(IsValid(BehindTakeDownTarget))
+		{
+			ExecuteTakeDown(ETakeDownType::Behind, BehindTakeDownTarget);
+		}
+	}
+	if(GetShouldExecuteTopTakeDown())
+	{
+		if(IsValid(BehindTakeDownTarget))
+		{
+			ExecuteTakeDown(ETakeDownType::Top, TopTakeDownTarget);
+		}
+	}
+	
+}
+
+void APlayerCharacter::ExecuteTakeDown(ETakeDownType Type, AActor* Target)
+{
+	UCharacterEquipmentComponent* EquipmentComponent = GetCharacterEquipmentComponent();
+	AMeleeWeapon* WeaponHardRef = EquipmentComponent->GetCurrentMeleeWeapon();
+	
+	TArray<FTakeDownDescription> AllAvailableTakeDowns = WeaponHardRef->GetTakeDowns(); //Gathering the array of possible takedowns
+	ToggleControls(false); //disabling movement
+	
+	bIsExecutingTakeDown = true;
+	SetCanAttack(false);
+
+	TArray<FTakeDownDescription> ChosenTakeDowns;
+	for(FTakeDownDescription TakeDownDescription : WeaponHardRef->GetTakeDowns()) //chosing what animations should we play based on takedown type
+	{
+		if(TakeDownDescription.TakeDownType == Type)
+		{
+			//TODO AddUnique doesn't work for some reason
+			ChosenTakeDowns.Add(TakeDownDescription);
+		}
+	}
+
+	FTakeDownDescription RequestedTakeDown = ChosenTakeDowns[FMath::RandRange(0, ChosenTakeDowns.Num() - 1)]; //choosing one particular takedown
+	MoveToTakeDownTarget(Target, RequestedTakeDown.Offset); //moving behind the target with offset
+	PlayTakeDownMontages(RequestedTakeDown); //playing animation montages on player
+	EnemyTakeDownInterfaceCall(Target, RequestedTakeDown); //calling the enemy takedown interface
+	TakeDownCameraRigActivation(RequestedTakeDown); //camera actions
+
+	GetWorld()->GetTimerManager().ClearTimer(TakeDownTimerHandle); //setting up the timer event that fires off when takedown is close to an end
+	GetWorld()->GetTimerManager().SetTimer(TakeDownTimerHandle, this, &APlayerCharacter::TakeDownEnd,
+		RequestedTakeDown.PlayerTakeDownMontage->GetPlayLength() - 0.2, false);
+}
+
+void APlayerCharacter::TakeDownEnd_Implementation()
+{
+	ToggleControls(true);
+	bIsExecutingTakeDown = false;
+	SetCanAttack(true);
+}
+
 void APlayerCharacter::OnDeath()
 {
 	Super::OnDeath();

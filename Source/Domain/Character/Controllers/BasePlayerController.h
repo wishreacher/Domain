@@ -50,6 +50,7 @@ private:
 	void EquipPrimaryWeapon();
 	void EquipSecondaryWeapon();
 	void EquipMeleeWeapon();
+	void TakeDown();
 
 	UPlayerHUDWidget* PlayerHUDWidget = nullptr;
 	void CreateAndInitializeWidgets();

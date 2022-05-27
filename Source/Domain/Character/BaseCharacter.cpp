@@ -109,6 +109,11 @@ void ABaseCharacter::UnCrouch(bool bClientSimulation)
 	bIsCrouching = false;
 }
 
+void ABaseCharacter::StartTakeDown()
+{
+	
+}
+
 void ABaseCharacter::Mantle(bool bForce)
 {
 	if(!(CanMantle() || bForce))

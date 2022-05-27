@@ -76,6 +76,7 @@ public:
 	virtual void ChangeCrouchState();
 	virtual void Crouch(bool bClientSimulation) override;
 	virtual void UnCrouch(bool bClientSimulation) override;
+	virtual void StartTakeDown();
 
 	/** Activates mantling
 	 * if ULedgeDetectorComponent() detects a climbable ledge:
