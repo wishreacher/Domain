@@ -452,6 +452,13 @@ void ABaseCharacter::EquipMeleeWeapon()
 	}
 }
 
+void ABaseCharacter::ToggleControls(bool bShouldEnableControl)
+{
+	GetBaseCharacterMovementComponent()->SetActive(bShouldEnableControl);
+	bUseControllerRotationYaw = bShouldEnableControl;
+	GetBaseCharacterMovementComponent()->SetJumpAllowed(bShouldEnableControl);
+}
+
 //Getters
 
 UCharacterAttributeComponent* ABaseCharacter::GetCharacterAttributeComponent() const

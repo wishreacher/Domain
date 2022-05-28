@@ -145,6 +145,9 @@ public:
 
 	UFUNCTION()
 	void EquipMeleeWeapon();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void ToggleControls(bool bShouldEnableControl);
 	
 protected:
 	//-----------------------------------------MOVEMENT------------------------------------------
