@@ -4,6 +4,7 @@
 #include "CharacterEquipmentComponent.h"
 #include "Domain/Types.h"
 #include "Domain/Character/BaseCharacter.h"
+#include "Domain/Components/BaseCharacterMovementComponent.h"
 
 void UCharacterEquipmentComponent::BeginPlay()
 {
@@ -105,6 +106,10 @@ void UCharacterEquipmentComponent::AttachCurrentItemToEquippedSocket()
 void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 {
 	if(bIsEquipping)
+	{
+		return;
+	}
+	if(CachedBaseCharacter->GetBaseCharacterMovementComponent()->IsMantling())
 	{
 		return;
 	}

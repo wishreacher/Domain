@@ -48,7 +48,7 @@ void UTakeDownComponent::BeginTakeDown()
 	}
 	if(GetShouldExecuteTopTakeDown())
 	{
-		if(IsValid(BehindTakeDownTarget))
+		if(IsValid(TopTakeDownTarget))
 		{
 			ExecuteTakeDown(ETakeDownType::Top, TopTakeDownTarget);
 		}
