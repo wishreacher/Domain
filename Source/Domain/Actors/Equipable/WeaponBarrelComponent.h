@@ -51,7 +51,7 @@ protected:
 	EHitRegistrationType HitRegistration = EHitRegistrationType::HitScan;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes", meta = (EditCondition = "HitRegistration == EHitRegistrationType::Projectile"))
-	TSubclassOf<class ABaseProjectile> ProjectileClass;
+	TSubclassOf<ABaseProjectile> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes")
 	float BaseDamageAmount = 20.0f;
