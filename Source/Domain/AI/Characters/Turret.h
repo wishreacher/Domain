@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Domain/Types.h"
 #include "GameFramework/Pawn.h"
 #include "Turret.generated.h"
 
@@ -25,6 +26,8 @@ public:
 	void SetCurrentTarget(AActor* NewTarget);
 	virtual FVector GetPawnViewLocation() const override;
 	virtual FRotator GetViewRotation() const override;
+	virtual void PossessedBy(AController* NewController) override;
+	void MakeShot();
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* TurretBaseComponent;
@@ -50,13 +53,26 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TurretParameters")
 	float BaseFiringInterpSpeed = 5.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TurretParameters|Fire", meta = (ClampMin = 1.f, UIMin = 1.f))
+	float RateOfFire = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TurretParameters|Fire", meta = (ClampMin = 0.f, UIMin = 0.f))
+	float BulletSpreadAngle = 30.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TurretParameters|Fire", meta = (ClampMin = 0.f, UIMin = 0.f))
+	float FireDelay = 3.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EFractions Fraction = EFractions::Bolshevik;
+
 private:
 	void SearchingMovement(float DeltaTime);
 	void FiringMovement(float DeltaTime);
-	FORCEINLINE void SetCurrentTurretState(ETurretState NewState){CurrentState = NewState;}
-	
+	void SetCurrentTurretState(ETurretState NewState);	
 	ETurretState CurrentState = ETurretState::Searching;
 
 	AActor* CurrentTarget = nullptr;
-	
+
+	FTimerHandle ShotTimer;
+	float GetFireInterval() const;
 };

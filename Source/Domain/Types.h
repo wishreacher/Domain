@@ -81,3 +81,13 @@ enum class ETakeDownType : uint8
 	Top,
 	MAX UMETA(Hidden)
 };
+
+UENUM(Blueprintable)
+enum class EFractions : uint8
+{
+	None,
+	Bolshevik,
+	Neutral,
+	UNO,
+	MAX UMETA(Hidden)
+};

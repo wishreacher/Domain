@@ -20,8 +20,10 @@ void AAITurretController::SetPawn(APawn* InPawn)
 	{
 		checkf(InPawn->IsA<ATurret>(), TEXT("AAITurretController::SetPawn AITurretController can possess only turrets"))
 		CachedTurret = StaticCast<ATurret*>(InPawn);
+	} else
+	{
+		CachedTurret = nullptr;
 	}
-	CachedTurret = nullptr;
 }
 
 void AAITurretController::ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
@@ -48,5 +50,4 @@ void AAITurretController::ActorsPerceptionUpdated(const TArray<AActor*>& Updated
 		}
 	}
 	CachedTurret->SetCurrentTarget(ClosestActor);
-	UKismetSystemLibrary::PrintString(this, ClosestActor->GetName());
 }

@@ -2,6 +2,8 @@
 
 
 #include "Domain/AI/Characters/Turret.h"
+
+#include "AIController.h"
 #include "Domain/Actors/Equipable/WeaponBarrelComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -33,8 +35,9 @@ void ATurret::Tick(float DeltaTime)
 		case ETurretState::Firing:
 			FiringMovement(DeltaTime);
 			break;
+		default:
+			break;
 	}
-	// UKismetSystemLibrary::PrintString(this, UEnum::GetDisplayValueAsText(CurrentState).ToString());
 }
 
 void ATurret::SetCurrentTarget(AActor* NewTarget)
@@ -42,7 +45,6 @@ void ATurret::SetCurrentTarget(AActor* NewTarget)
 	CurrentTarget = NewTarget;
 	ETurretState NewState = IsValid(CurrentTarget) ? ETurretState::Firing : ETurretState::Searching;
 	SetCurrentTurretState(NewState);
-	// UKismetSystemLibrary::PrintString(this, NewTarget->GetName());
 }
 
 FVector ATurret::GetPawnViewLocation() const
@@ -53,6 +55,24 @@ FVector ATurret::GetPawnViewLocation() const
 FRotator ATurret::GetViewRotation() const
 {
 	return WeaponBarrelComponent->GetComponentRotation();
+}
+
+void ATurret::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	AAIController* AIController = Cast<AAIController>(NewController);
+	if(IsValid(AIController))
+	{
+		FGenericTeamId TeamId((uint8)Fraction);
+		AIController->SetGenericTeamId(TeamId);
+	}
+}
+
+void ATurret::MakeShot()
+{
+	FVector ShotLocation = WeaponBarrelComponent->GetComponentLocation();
+	FVector ShotDirection = WeaponBarrelComponent->GetComponentRotation().RotateVector(FVector::ForwardVector);
+	WeaponBarrelComponent->Shot(ShotLocation, ShotDirection, FMath::DegreesToRadians(BulletSpreadAngle));
 }
 
 void ATurret::SearchingMovement(float DeltaTime)
@@ -78,6 +98,31 @@ void ATurret::FiringMovement(float DeltaTime)
 	
 	FRotator BarrelLocalRotation = TurretBarrelComponent->GetRelativeRotation();
 	BarrelLocalRotation.Pitch = FMath::FInterpTo(BarrelLocalRotation.Pitch, BarrelLookAtPitchAngle, DeltaTime, BarrelPitchRotationRate);
-	TurretBarrelComponent->SetWorldRotation(BarrelLocalRotation);
+	TurretBarrelComponent->SetRelativeRotation(BarrelLocalRotation);
+}
+
+void ATurret::SetCurrentTurretState(ETurretState NewState)
+{
+	bool bIsStateChanged = NewState != CurrentState;
+	CurrentState = NewState;
+	if(!bIsStateChanged)
+	{
+		return;
+	}
+	switch (CurrentState)
+	{
+		case ETurretState::Firing:
+			GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ATurret::MakeShot, GetFireInterval(), true, FireDelay);
+			break;
+
+		case ETurretState::Searching:
+			GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
+			break;
+	}
 	
+}
+
+float ATurret::GetFireInterval() const
+{
+	return 60.f / RateOfFire;
 }

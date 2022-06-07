@@ -30,6 +30,8 @@ APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer) 
 
 	GetCharacterMovement()->bOrientRotationToMovement = 1;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+
+	Fraction = EFractions::UNO;
 }
 
 void APlayerCharacter::BeginPlay()

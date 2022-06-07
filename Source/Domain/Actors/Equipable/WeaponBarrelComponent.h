@@ -68,8 +68,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes|Decals")
 	FDecalInfo DefaultDecalInfo;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes|Decals")
-	TSubclassOf<class UDamageType> DamageTypeClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel Attributes")
+	TSubclassOf<UDamageType> DamageTypeClass;
 
 private:
 	float FinalDamage;

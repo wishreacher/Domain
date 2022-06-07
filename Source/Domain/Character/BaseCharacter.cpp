@@ -2,6 +2,8 @@
 
 
 #include "BaseCharacter.h"
+
+#include "AIController.h"
 #include "Curves/CurveVector.h"
 #include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
@@ -112,6 +114,17 @@ void ABaseCharacter::UnCrouch(bool bClientSimulation)
 void ABaseCharacter::StartTakeDown()
 {
 	
+}
+
+void ABaseCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	AAIController* AIController = Cast<AAIController>(NewController);
+	if(IsValid(AIController))
+	{
+		FGenericTeamId TeamId((uint8)Fraction);
+		AIController->SetGenericTeamId(TeamId);
+	}
 }
 
 void ABaseCharacter::Mantle(bool bForce)
@@ -457,6 +470,12 @@ void ABaseCharacter::ToggleControls(bool bShouldEnableControl)
 	GetBaseCharacterMovementComponent()->SetActive(bShouldEnableControl);
 	bUseControllerRotationYaw = bShouldEnableControl;
 	GetBaseCharacterMovementComponent()->SetJumpAllowed(bShouldEnableControl);
+}
+
+FGenericTeamId ABaseCharacter::GetGenericTeamId() const
+{
+	return FGenericTeamId((uint8)Fraction);
+	
 }
 
 //Getters

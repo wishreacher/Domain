@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
+#include "Domain/Types.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "BaseCharacter.generated.h"
@@ -47,7 +49,7 @@ class UCharacterEquipmentComponent;
 class UCharacterAttributeComponent;
 class ULedgeDetectorComponent;
 UCLASS(Abstract, NotBlueprintable)
-class DOMAIN_API ABaseCharacter : public ACharacter
+class DOMAIN_API ABaseCharacter : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 	
@@ -77,6 +79,7 @@ public:
 	virtual void Crouch(bool bClientSimulation) override;
 	virtual void UnCrouch(bool bClientSimulation) override;
 	virtual void StartTakeDown();
+	virtual void PossessedBy(AController* NewController) override;
 
 	/** Activates mantling
 	 * if ULedgeDetectorComponent() detects a climbable ledge:
@@ -148,6 +151,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void ToggleControls(bool bShouldEnableControl);
+
+	//-----------------------------------------TeamInterface------------------------------------------
+	virtual FGenericTeamId GetGenericTeamId() const override;
 	
 protected:
 	//-----------------------------------------MOVEMENT------------------------------------------
@@ -178,11 +184,11 @@ protected:
 	float LowMantleMaxHeight = 125.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character|Animation")
-	class UAnimMontage* OnDeathAnimMontage;
+	UAnimMontage* OnDeathAnimMontage;
 
 	// Damage depends on fall height in meters
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character|Attributes")
-	class UCurveFloat* FallDamageCurve;
+	UCurveFloat* FallDamageCurve;
 	
 	virtual void OnDeath();
 
@@ -199,6 +205,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	ULedgeDetectorComponent* LedgeDetectorComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EFractions Fraction = EFractions::Bolshevik;
+	
 private:
 	void EnableRagdoll();
 	void TryChangeSprintState();
