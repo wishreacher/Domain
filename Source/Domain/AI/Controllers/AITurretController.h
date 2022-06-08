@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIController.h"
+#include "BaseAIController.h"
 #include "AITurretController.generated.h"
 
 class ATurret;
@@ -11,14 +11,15 @@ class ATurret;
  * 
  */
 UCLASS()
-class DOMAIN_API AAITurretController : public AAIController
+class DOMAIN_API AAITurretController : public ABaseAIController
 {
 	GENERATED_BODY()
 public:
-	AAITurretController();
 	virtual void SetPawn(APawn* InPawn) override;
 
 	virtual void ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors) override;
+
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
 	TWeakObjectPtr<ATurret> CachedTurret;

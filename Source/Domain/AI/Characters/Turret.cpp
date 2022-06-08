@@ -88,6 +88,10 @@ void ATurret::SearchingMovement(float DeltaTime)
 
 void ATurret::FiringMovement(float DeltaTime)
 {
+	if(!IsValid(CurrentTarget))
+	{
+		SetCurrentTurretState(ETurretState::Searching);
+	}
 	FVector BaseLookAtDirection = (CurrentTarget->GetActorLocation() - TurretBaseComponent->GetComponentLocation()).GetSafeNormal2D();
 	FQuat LookAtQuat = BaseLookAtDirection.ToOrientationQuat();
 	FQuat TargetQuat = FMath::QInterpTo(TurretBaseComponent->GetComponentQuat(), LookAtQuat, DeltaTime, BaseFiringInterpSpeed);

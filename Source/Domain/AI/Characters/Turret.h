@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Domain/Types.h"
+#include "Domain/Components/CharacterComponents/CharacterAttributeComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Turret.generated.h"
 
@@ -64,6 +65,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	EFractions Fraction = EFractions::Bolshevik;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UCharacterAttributeComponent* CharacterAttributeComponent;
 
 private:
 	void SearchingMovement(float DeltaTime);
