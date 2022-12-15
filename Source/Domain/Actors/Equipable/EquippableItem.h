@@ -23,7 +23,6 @@ public:
 	FName GetSecondHandUnEquippedSocketName() const;
 	bool GetIsDual() const;
 	UAnimMontage* GetCharacterEquipAnimMontage() const;
-	virtual EReticleType GetReticleType() const;
 	virtual void SetOwner(AActor* NewOwner) override;
 	
 protected:
@@ -47,9 +46,6 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item")
 	UAnimMontage* CharacterEquipAnimMontage;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable item|Reticle")
-	EReticleType ReticleType = EReticleType::None;
 
 	ABaseCharacter* GetCharacterOwner() const;
 

@@ -37,19 +37,6 @@ private:
 	void ChangeCrouchState();
 	void StartSprint();
 	void StopSprint();
-	void StartFire();
-	void StopFire();
-	void StartAim();
-	void StopAim();
-	void Reload();
-	void NextItem();
-	void PreviousItem();
-	void PrimaryMeleeAttack();
-	void SecondaryMeleeAttack();
-	void EquipSideArmWeapon();
-	void EquipPrimaryWeapon();
-	void EquipSecondaryWeapon();
-	void EquipMeleeWeapon();
 	void TakeDown();
 
 	UPlayerHUDWidget* PlayerHUDWidget = nullptr;

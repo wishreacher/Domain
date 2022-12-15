@@ -1,11 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ // Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Camera/CameraShakeSourceComponent.h"
-#include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
 #include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -46,14 +45,14 @@ void APlayerCharacter::BeginPlay()
 	// 	ScopeTimeLine.SetLooping(false);
 	// }
 
-	TArray<UActorComponent*> TakeDownComponents = GetComponentsByClass(UTakeDownComponent::StaticClass());
-	for(UActorComponent* ActorComponent : TakeDownComponents)
-	{
-		if(ActorComponent->IsA<UTakeDownComponent>())
-		{
-			TakeDownComponent = Cast<UTakeDownComponent>(ActorComponent);
-		}
-	}
+	// TArray<UActorComponent*> TakeDownComponents = GetComponentsByClass(UTakeDownComponent::StaticClass());
+	// for(UActorComponent* ActorComponent : TakeDownComponents)
+	// {
+	// 	if(ActorComponent->IsA<UTakeDownComponent>())
+	// 	{
+	// 		TakeDownComponent = Cast<UTakeDownComponent>(ActorComponent);
+	// 	}
+	// }
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -90,10 +89,6 @@ void APlayerCharacter::Turn(float Value)
 {
 	float AimTurnModifier = 1.f;
 	float SprintTurnModifier = 1.f;
-	if(IsValid(GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()) && GetIsAiming())
-	{
-		AimTurnModifier = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->GetAimTurnModifier();
-	}
 	if(GetIsSprinting())
 	{
 		SprintTurnModifier = GetBaseCharacterMovementComponent()->GetSprintTurnRate();
@@ -104,31 +99,18 @@ void APlayerCharacter::Turn(float Value)
 void APlayerCharacter::LookUp(float Value)
 {
 	float AimLookUpModifier = 1.f;
-	if(IsValid(GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()) && GetIsAiming())
-	{
-		AimLookUpModifier = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->GetAimLookUpModifier();
-	}
 	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * AimLookUpModifier);
 }
 
 void APlayerCharacter::TurnAtRate(float Value)
 {
 	float AimTurnModifier = 1.f;
-	if(IsValid(GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()) && GetIsAiming())
-	{
-		AimTurnModifier = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->GetAimTurnModifier();
-	}
 	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds() * AimTurnModifier);
 }
 
 void APlayerCharacter::LookUpAtRate(float Value)
 {
 	float AimLookUpModifier = 1.f;
-	if(IsValid(GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()) && GetIsAiming())
-	{
-		AimLookUpModifier = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->GetAimLookUpModifier();
-	}
-	
 	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds() * AimLookUpModifier);
 }
 
@@ -187,18 +169,6 @@ void APlayerCharacter::OnJumped_Implementation()
 	}
 }
 
-float APlayerCharacter::GetAimTurnModifier() const
-{
-	ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-	return RangeWeapon->GetAimTurnModifier();
-}
-
-float APlayerCharacter::GetAimLookUpModifier() const
-{
-	ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-	return RangeWeapon->GetAimLookUpModifier();
-}
-
 // void APlayerCharacter::TimelineFloatReturn(float Value) const
 // {
 // 	APlayerController* PlayerController = GetController<APlayerController>();
@@ -209,59 +179,6 @@ float APlayerCharacter::GetAimLookUpModifier() const
 // 		CameraManager->SetFOV(FMath::Lerp(CameraComponent->FieldOfView, RangeWeapon->GetAimFOV(), Value));
 // 	}
 // }
-
-void APlayerCharacter::OnStartAimingInternal()
-{
-	Super::OnStartAimingInternal();
-	APlayerController* PlayerController = GetController<APlayerController>();
-	// ARangeWeapon* RangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-	
-	if(!IsValid(PlayerController))
-	{
-		return;
-	}
-	if(GetBaseCharacterMovementComponent()->IsSprinting() || GetBaseCharacterMovementComponent()->IsOutOfStamina() || GetBaseCharacterMovementComponent()->IsSwimming())
-	{
-		return;
-	}
-	// if(IsValid(RangeWeapon->GetScopeCurve()))
-	// {
-	// 	ScopeTimeLine.PlayFromStart();
-	// } else
-	// {
-	// 	APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager;
-	// 	if(IsValid(CameraManager))
-	// 	{
-	// 		CameraManager->SetFOV(RangeWeapon->GetAimFOV());
-	// 	}
-	// }
-	SetAimCameraFOV();
-}
-
-void APlayerCharacter::OnStopAimingInternal()
-{
-	Super::OnStopAimingInternal();
-	SetDefaultCameraFOV();
-	APlayerController* PlayerController = GetController<APlayerController>();
-	
-	if(!IsValid(PlayerController))
-	{
-		return;
-	}
-
-	// APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager;
-	// if(IsValid(CameraManager))
-	// {
-	// 	CameraManager->UnlockFOV();
-	// }
-	// ScopeTimeLine.Stop();
-	
-}
-
-void APlayerCharacter::OnWeaponReloadBegin()
-{
-	OnStopAimingInternal();
-}
 
 void APlayerCharacter::ToggleControls(bool bShouldEnableControl)
 {

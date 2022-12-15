@@ -5,11 +5,11 @@
 
 #include "AIController.h"
 #include "Curves/CurveVector.h"
-#include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
 #include "Domain/Components/LedgeDetectorComponent.h"
 #include "Domain/Components/CharacterComponents/CharacterAttributeComponent.h"
 #include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
+#include "Engine/DamageEvents.h"
 
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -80,10 +80,6 @@ void ABaseCharacter::Tick(float DeltaSeconds)
 void ABaseCharacter::Jump()
 {
 	Super::Jump();
-	if(CharacterEquipmentComponent->GetCurrentRangeWeapon())
-	{
-		CharacterEquipmentComponent->GetCurrentRangeWeapon()->StopFire();
-	}
 }
 
 void ABaseCharacter::ChangeCrouchState()
@@ -187,12 +183,6 @@ void ABaseCharacter::StartSprint()
 	{
 		UnCrouch(true);
 	}
-	if(CharacterEquipmentComponent->GetCurrentRangeWeapon())
-	{
-		GetCharacterEquipmentComponent()->GetCurrentRangeWeapon()->EndReload(false);
-	}
-	
-	StopAim();
 }
 
 void ABaseCharacter::StopSprint()
@@ -215,7 +205,7 @@ void ABaseCharacter::OnDeath()
 	float Duration = PlayAnimMontage(OnDeathAnimMontage);
 	if(Duration == 0)
 	{
-		GetWorld()->GetTimerManager().SetTimer(DeathMontageTimer, this, &ABaseCharacter::EnableRagdoll, Duration, false);
+		// GetWorld()->GetTimerManager().SetTimer(DeathMontageTimer, this, &ABaseCharacter::EnableRagdoll, Duration, false);
 	}
 }
 
@@ -247,224 +237,6 @@ void ABaseCharacter::TryChangeSprintState()
 	}
 }
 
-// Range Weapon
-void ABaseCharacter::StartFire()
-{
-	if(!BaseCharacterMovementComponent->CanShotInCurrentState())
-	{
-		return;
-	}
-	if(!CharacterEquipmentComponent->GetCurrentRangeWeapon())
-	{
-		return;
-	}
-	if(CharacterEquipmentComponent->GetIsEquipping())
-	{
-		return;
-	}
-	ARangeWeapon* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
-	if(CurrentRangeWeapon)
-	{
-		CurrentRangeWeapon->StartFire();
-	}
-}
-
-void ABaseCharacter::StopFire()
-{
-	ARangeWeapon* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
-	if(CurrentRangeWeapon)
-	{
-		CurrentRangeWeapon->StopFire();
-	}
-}
-
-void ABaseCharacter::StartAim()
-{
-	ARangeWeapon* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-	if(!CurrentRangeWeapon)
-	{
-		return;
-	}
-	if(!CurrentRangeWeapon->CanAim())
-	{
-		return;
-	}
-	
-	StopSprint();
-	bIsAiming = true;
-	CurrentAimingMovementSpeed = CurrentRangeWeapon->GetAimMovementMaxSpeed();
-	OnStartAiming();
-	CurrentRangeWeapon->StartAim();
-}
-
-void ABaseCharacter::StopAim()
-{
-	if(!bIsAiming)
-	{
-		return;
-	}
-	ARangeWeapon* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-	if(CurrentRangeWeapon)
-	{
-		CurrentRangeWeapon->StopAim();
-	}
-	
-	bIsAiming = false;
-	CurrentAimingMovementSpeed = 0.f;
-	OnStopAiming();
-}
-
-void ABaseCharacter::NextItem()
-{
-	CharacterEquipmentComponent->EquipNextItem();
-}
-
-void ABaseCharacter::PreviousItem()
-{
-	CharacterEquipmentComponent->EquipPreviousItem();
-}
-
-void ABaseCharacter::PrimaryMeleeAttack()
-{
-	if(bCanAttack == false)
-	{
-		return;
-	}
-	bCanAttack = false;
-	
-	AMeleeWeapon* MeleeWeapon = GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
-	if(IsValid(MeleeWeapon))
-	{
-		MeleeWeapon->StartAttack(EMeleeAttackType::PrimaryAttack);
-	}
-}
-
-void ABaseCharacter::SecondaryMeleeAttack()
-{
-	if(bCanAttack == false)
-	{
-		return;
-	}
-	bCanAttack = false;
-	AMeleeWeapon* MeleeWeapon = GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
-	if(IsValid(MeleeWeapon))
-	{
-		MeleeWeapon->StartAttack(EMeleeAttackType::SecondaryAttack);
-	}
-}
-
-void ABaseCharacter::EnableRagdoll()
-{
-	GetMesh()->SetCollisionProfileName(CollisionProfileRagdoll);
-	GetMesh()->SetSimulatePhysics(true);
-}
-
-void ABaseCharacter::OnStartAiming_Implementation()
-{
-	OnStartAimingInternal();
-}
-
-void ABaseCharacter::OnStopAiming_Implementation()
-{
-	OnStopAimingInternal();
-}
-
-void ABaseCharacter::Reload()
-{
-	if(!CharacterEquipmentComponent->GetCurrentRangeWeapon())
-	{
-		return;
-	}
-	if(CharacterEquipmentComponent->GetCurrentRangeWeapon())
-	{
-		CharacterEquipmentComponent->ReloadCurrentWeapon();
-	}
-}
-
-void ABaseCharacter::OnStartAimingInternal()
-{
-	if(OnAimingStateChanged.IsBound())
-	{
-		OnAimingStateChanged.Broadcast(true);
-	}
-}
-
-void ABaseCharacter::OnStopAimingInternal()
-{
-	if(OnAimingStateChanged.IsBound())
-	{
-		OnAimingStateChanged.Broadcast(false);
-	}
-}
-
-void ABaseCharacter::EquipSideArmWeapon()
-{
-	if(!IsValid(GetCharacterEquipmentComponent()))
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::SideArm)
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::SideArm) &&
-		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::SideArm)))
-	{
-		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::SideArm);
-	}
-}
-
-void ABaseCharacter::EquipPrimaryWeapon()
-{
-	if(!IsValid(GetCharacterEquipmentComponent()))
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::PrimaryWeapon)
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::PrimaryWeapon) &&
-		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::PrimaryWeapon)))
-	{
-		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::PrimaryWeapon);
-	}
-}
-
-void ABaseCharacter::EquipSecondaryWeapon()
-{
-	if(!IsValid(GetCharacterEquipmentComponent()))
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::SecondaryWeapon)
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::SecondaryWeapon)&&
-		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::SecondaryWeapon)))
-	{
-		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::SecondaryWeapon);
-	}
-}
-
-void ABaseCharacter::EquipMeleeWeapon()
-{
-	if(!IsValid(GetCharacterEquipmentComponent()))
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentEquippedSlot() == EEquipmentSlots::MeleeWeapon)
-	{
-		return;
-	}
-	if(GetCharacterEquipmentComponent()->GetCurrentLoadout().Contains(EEquipmentSlots::MeleeWeapon)&&
-		IsValid(*GetCharacterEquipmentComponent()->GetCurrentLoadout().Find(EEquipmentSlots::MeleeWeapon)))
-	{
-		GetCharacterEquipmentComponent()->EquipItemInSlot(EEquipmentSlots::MeleeWeapon);
-	}
-}
-
 void ABaseCharacter::ToggleControls(bool bShouldEnableControl)
 {
 	GetBaseCharacterMovementComponent()->SetActive(bShouldEnableControl);
@@ -484,20 +256,4 @@ UCharacterAttributeComponent* ABaseCharacter::GetCharacterAttributeComponent() c
 {
 	return CharacterAttributeComponent;
 }
-
-UCharacterEquipmentComponent* ABaseCharacter::GetCharacterEquipmentComponent() const
-{
-	return CharacterEquipmentComponent;
-}
-
-bool ABaseCharacter::GetIsAiming() const
-{
-	return bIsAiming;
-}
-
-float ABaseCharacter::GetAimingMovementSpeed() const
-{
-	return CurrentAimingMovementSpeed;
-}
-
 

@@ -14,15 +14,15 @@ void UAnimNotify_SetMelleHitRegEnabled::Notify(USkeletalMeshComponent* MeshComp,
 	{
 		return;
 	}
-	AMeleeWeapon* MeleeWeapon = CharacterOwner->GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
-	if(IsValid(MeleeWeapon))
-	{
-		MeleeWeapon->SetIsHitRegistrationEnabled(bIsHitRegistrationEnabled);
-
-		AMeleeWeapon* SecondHandMeleeWeapon = Cast<AMeleeWeapon>(CharacterOwner->GetCharacterEquipmentComponent()->GetCurrentSecondHandWeapon());
-		if(IsValid(SecondHandMeleeWeapon))
-		{
-			SecondHandMeleeWeapon->SetIsHitRegistrationEnabled(bIsHitRegistrationEnabled);
-		}
-	}
+	// AMeleeWeapon* MeleeWeapon = CharacterOwner->GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon();
+	// if(IsValid(MeleeWeapon))
+	// {
+	// 	MeleeWeapon->SetIsHitRegistrationEnabled(bIsHitRegistrationEnabled);
+	//
+	// 	AMeleeWeapon* SecondHandMeleeWeapon = Cast<AMeleeWeapon>(CharacterOwner->GetCharacterEquipmentComponent()->GetCurrentSecondHandWeapon());
+	// 	if(IsValid(SecondHandMeleeWeapon))
+	// 	{
+	// 		SecondHandMeleeWeapon->SetIsHitRegistrationEnabled(bIsHitRegistrationEnabled);
+	// 	}
+	// }
 }

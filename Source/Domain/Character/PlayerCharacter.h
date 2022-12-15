@@ -38,15 +38,6 @@ public:
 
 	virtual bool CanJumpInternal_Implementation() const override;
 	virtual void OnJumped_Implementation() override;
-	
-	float GetAimTurnModifier() const;
-	float GetAimLookUpModifier() const;
-
-	virtual void OnStartAimingInternal() override;
-	virtual void OnStopAimingInternal() override;
-
-	UFUNCTION()
-	void OnWeaponReloadBegin();
 
 	UFUNCTION(BlueprintNativeEvent)
 	void SetAimCameraFOV();

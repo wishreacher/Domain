@@ -48,9 +48,6 @@ public:
 	bool CanJumpAndSprint();
 	bool CannotJumpAndSprint();
 	virtual bool CanCrouchInCurrentState() const override;
-
-	//-----------------------------------------Prone and Crouch------------------------------------------
-	bool CanShotInCurrentState();
 	
 	//-----------------------------------------Mantle------------------------------------------
 	void StartMantle(const FMantlingMovementParameters& MantlingParameters);

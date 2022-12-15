@@ -8,7 +8,6 @@
 #include "Curves/CurveVector.h"
 #include "Engine/World.h"
 #include "CharacterComponents/CharacterEquipmentComponent.h"
-#include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 
 //General
 float UBaseCharacterMovementComponent::GetMaxSpeed() const
@@ -21,10 +20,6 @@ float UBaseCharacterMovementComponent::GetMaxSpeed() const
 	if(bIsOutOfStamina)
 	{
 		Result = OutOfStaminaSpeed;
-	}
-	if(GetBaseCharacterOwner()->GetIsAiming())
-	{
-		Result = GetBaseCharacterOwner()->GetAimingMovementSpeed();
 	}
 	if(GetBaseCharacterOwner()->GetIsCrouching())
 	{
@@ -209,22 +204,4 @@ void UBaseCharacterMovementComponent::PhysMantling(float DeltaTime, int32 Iterat
 	FVector Delta = NewLocation - GetActorLocation();
 	FHitResult Hit;
 	SafeMoveUpdatedComponent(Delta, NewRotation, false, Hit);
-}
-
-//Range Weapon
-bool UBaseCharacterMovementComponent::CanShotInCurrentState()
-{
-	if(IsMovingOnGround() && UpdatedComponent && !UpdatedComponent->IsSimulatingPhysics() && !IsOutOfStamina() && !IsSprinting())
-	{
-		ARangeWeapon* RangeWeapon = GetBaseCharacterOwner()->GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
-		if(IsValid(RangeWeapon))
-		{
-			if(RangeWeapon->GetIsReloading() && RangeWeapon->GetAmmo() == 0)
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	return false;
 }

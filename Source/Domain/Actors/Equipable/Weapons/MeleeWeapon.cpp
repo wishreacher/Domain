@@ -9,7 +9,7 @@
 
 AMeleeWeapon::AMeleeWeapon()
 {
-	EquippedSocketName = SocketCharacterWeapon;
+	
 }
 
 void AMeleeWeapon::StartAttack(EMeleeAttackType AttackType)

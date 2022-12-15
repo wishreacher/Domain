@@ -91,34 +91,9 @@ public:
 
 	FORCEINLINE void SetTimeDilation(float NewDilation){UGameplayStatics::SetGlobalTimeDilation(GetWorld(), NewDilation);}
 	
-	//-----------------------------------------Range Weapon------------------------------------------
-	void StartFire();
-	void StopFire();
-
-	void StartAim();
-	void StopAim();
-
-	FOnAimingStateChanged OnAimingStateChanged;
-	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
-	void OnStartAiming();
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Character")
-	void OnStopAiming();
-
-	void Reload();
-
-	void NextItem();
-	void PreviousItem();
-
-	UFUNCTION(BlueprintCallable)
-	void PrimaryMeleeAttack();
-
-	UFUNCTION(BlueprintCallable)
-	void SecondaryMeleeAttack();
-	
 	//-----------------------------------------Getters------------------------------------------
 	FORCEINLINE UBaseCharacterMovementComponent* GetBaseCharacterMovementComponent() const { return BaseCharacterMovementComponent; }
+	FORCEINLINE UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const { return CharacterEquipmentComponent; }
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool GetIsSprinting() const {return bIsSprintRequested;}
 	FORCEINLINE bool GetIsCrouching() const {return bIsCrouching;}
@@ -126,29 +101,10 @@ public:
 	FORCEINLINE void SetIsAttacking(bool NewAttacking) {bIsAttacking = NewAttacking;}
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetCanAttack(bool NewCanAttack) {bCanAttack = NewCanAttack;}
-
-	UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const;
-	bool GetIsAiming() const;
-	float GetAimingMovementSpeed() const;
 	
 	UFUNCTION(BlueprintCallable)
 	UCharacterAttributeComponent* GetCharacterAttributeComponent() const;
-
-	virtual void OnStartAimingInternal();
-	virtual void OnStopAimingInternal();
-
-	UFUNCTION()
-	void EquipSideArmWeapon();
-
-	UFUNCTION()
-	void EquipPrimaryWeapon();
 	
-	UFUNCTION()
-	void EquipSecondaryWeapon();
-
-	UFUNCTION()
-	void EquipMeleeWeapon();
-
 	UFUNCTION(BlueprintCallable)
 	virtual void ToggleControls(bool bShouldEnableControl);
 
@@ -210,14 +166,12 @@ protected:
 	EFractions Fraction = EFractions::Bolshevik;
 	
 private:
-	void EnableRagdoll();
 	void TryChangeSprintState();
 	
 	float DefaultMaxMovementSpeed = 0.0f;
 	float CurrentAimingMovementSpeed = 0.f;
 	bool bIsSprintRequested = false;
 	bool bCanCrouch = true;
-	bool bIsAiming = false;
 	bool bIsCrouching = false;
 	bool bIsAttacking = false;
 	bool bCanAttack = true;

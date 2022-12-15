@@ -15,5 +15,4 @@ void UAnimNotify_AttachEquippedItem::Notify(USkeletalMeshComponent* MeshComp, UA
 	{
 		return;
 	}
-	CharacterOwner->GetCharacterEquipmentComponent()->AttachCurrentItemToEquippedSocket();
 }

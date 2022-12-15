@@ -38,11 +38,6 @@ UAnimMontage* AEquippableItem::GetCharacterEquipAnimMontage() const
 	return CharacterEquipAnimMontage;
 }
 
-EReticleType AEquippableItem::GetReticleType() const
-{
-	return ReticleType;
-}
-
 void AEquippableItem::SetOwner(AActor* NewOwner)
 {
 	Super::SetOwner(NewOwner);

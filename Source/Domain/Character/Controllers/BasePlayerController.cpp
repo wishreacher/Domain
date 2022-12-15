@@ -26,19 +26,6 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAction("Crouch", EInputEvent::IE_Pressed, this, &ABasePlayerController::ChangeCrouchState);
 	InputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &ABasePlayerController::StartSprint);
 	InputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ABasePlayerController::StopSprint);
-	InputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &ABasePlayerController::StartFire);
-	InputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &ABasePlayerController::StopFire);
-	InputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ABasePlayerController::StartAim);
-	InputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ABasePlayerController::StopAim);
-	InputComponent->BindAction("Reload", EInputEvent::IE_Pressed, this, &ABasePlayerController::Reload);
-	InputComponent->BindAction("NextItem", EInputEvent::IE_Pressed, this, &ABasePlayerController::NextItem);
-	InputComponent->BindAction("PreviousItem", EInputEvent::IE_Pressed, this, &ABasePlayerController::PreviousItem);
-	InputComponent->BindAction("PrimaryMeleeAttack", EInputEvent::IE_Pressed, this, &ABasePlayerController::PrimaryMeleeAttack);
-	InputComponent->BindAction("SecondaryMeleeAttack", EInputEvent::IE_Pressed, this, &ABasePlayerController::SecondaryMeleeAttack);
-	InputComponent->BindAction("EquipSideArmWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipSideArmWeapon);
-	InputComponent->BindAction("EquipPrimaryWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipPrimaryWeapon);
-	InputComponent->BindAction("EquipSecondaryWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipSecondaryWeapon);
-	InputComponent->BindAction("EquipMeleeWeapon", EInputEvent::IE_Pressed, this, &ABasePlayerController::EquipMeleeWeapon);
 	InputComponent->BindAction("Takedown", EInputEvent::IE_Pressed, this, &ABasePlayerController::TakeDown);
 }
 
@@ -103,110 +90,6 @@ void ABasePlayerController::StopSprint()
 	}
 }
 
-void ABasePlayerController::StartFire()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->StartFire();
-	}
-}
-
-void ABasePlayerController::StopFire()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->StopFire();
-	}
-}
-
-void ABasePlayerController::StartAim()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->StartAim();
-	}
-}
-
-void ABasePlayerController::StopAim()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->StopAim();
-	}
-}
-
-void ABasePlayerController::Reload()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->Reload();
-	}
-}
-
-void ABasePlayerController::NextItem()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->NextItem();
-	}
-}
-
-void ABasePlayerController::PreviousItem()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->PreviousItem();
-	}
-}
-
-void ABasePlayerController::PrimaryMeleeAttack()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->PrimaryMeleeAttack();
-	}
-}
-
-void ABasePlayerController::SecondaryMeleeAttack()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->SecondaryMeleeAttack();
-	}
-}
-
-void ABasePlayerController::EquipSideArmWeapon()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->EquipSideArmWeapon();
-	}
-}
-
-void ABasePlayerController::EquipPrimaryWeapon()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->EquipPrimaryWeapon();
-	}
-}
-
-void ABasePlayerController::EquipSecondaryWeapon()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->EquipSecondaryWeapon();
-	}
-}
-
-void ABasePlayerController::EquipMeleeWeapon()
-{
-	if(CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->EquipMeleeWeapon();
-	}
-}
-
 void ABasePlayerController::TakeDown()
 {
 	if(CachedBaseCharacter.IsValid())
@@ -223,23 +106,6 @@ void ABasePlayerController::CreateAndInitializeWidgets()
 		if(IsValid(PlayerHUDWidget))
 		{
 			PlayerHUDWidget->AddToViewport();
-		}
-	}
-	if(IsValid(PlayerHUDWidget) && CachedBaseCharacter.IsValid() )
-	{
-		UCrosshairWidget* CrosshairWidget = PlayerHUDWidget->GetCrosshairWidget();
-		if(IsValid(CrosshairWidget))
-		{
-			UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
-			CachedBaseCharacter->OnAimingStateChanged.AddUFunction(CrosshairWidget, FName("OnAimingStateChanged"));
-			CharacterEquipment->OnEquippedItemChanged.AddUFunction(CrosshairWidget, FName("OnEquippedItemChanged"));
-		}
-
-		UAmmoWidget* AmmoWidget = PlayerHUDWidget->GetAmmoWidget();
-		if(IsValid(AmmoWidget))
-		{
-			UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
-			CharacterEquipment->OnCurrentWeaponAmmoChangedEvent.AddUFunction(AmmoWidget, FName("UpdateAmmoCount"));
 		}
 	}
 }

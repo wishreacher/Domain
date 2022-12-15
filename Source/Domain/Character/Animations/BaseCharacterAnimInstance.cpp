@@ -4,7 +4,6 @@
 #include "BaseCharacterAnimInstance.h"
 #include "Domain/Character/BaseCharacter.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
-#include "Domain/Actors/Equipable/Weapons/RangeWeapon.h"
 #include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 void UBaseCharacterAnimInstance::NativeBeginPlay()
@@ -31,44 +30,31 @@ void UBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsSprinting = CharacterMovement->IsSprinting();
 	bIsOutOfStamina = CharacterMovement->IsOutOfStamina();
 	bIsSwimming = CharacterMovement->IsSwimming();
-	bIsAiming = CachedBaseCharacter->GetIsAiming();
-
-	const UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent();
-	CurrentEquippedItem = CharacterEquipment->GetCurrentEquippedItem();
-
-	ARangeWeapon* CurrentRangeWeapon = CharacterEquipment->GetCurrentRangeWeapon();
-	if(IsValid(CurrentRangeWeapon))
-	{
-		ForeGripSocketTransform = CurrentRangeWeapon->GetForeGripTransform();
-	} else
-	{
-		ForeGripSocketTransform = FTransform::Identity;
-	}
 }
 
 void UBaseCharacterAnimInstance::PlayComboMontage(EMeleeAttackType AttackType)
 {
-	UAnimMontage* ComboMontage = CachedBaseCharacter->GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon()->GetCurrentAttack()->AttackMontage;
-	if(!IsValid(ComboMontage))
-	{
-		return;
-	}
-	
-	switch(AttackType)
-	{
-	case (uint8)EMeleeAttackType::PrimaryAttack:
-		{
-			CachedBaseCharacter->PlayAnimMontage(ComboMontage,1, LightComboAttack);
-			break;
-		}
-	case (uint8)EMeleeAttackType::SecondaryAttack:
-		{
-			CachedBaseCharacter->PlayAnimMontage(ComboMontage, 1, HeavyComboAttack);
-			break;
-		}
-	default:
-		break;
-	}
+	// UAnimMontage* ComboMontage = CachedBaseCharacter->GetCharacterEquipmentComponent()->GetCurrentMeleeWeapon()->GetCurrentAttack()->AttackMontage;
+	// if(!IsValid(ComboMontage))
+	// {
+	// 	return;
+	// }
+	//
+	// switch(AttackType)
+	// {
+	// case (uint8)EMeleeAttackType::PrimaryAttack:
+	// 	{
+	// 		CachedBaseCharacter->PlayAnimMontage(ComboMontage,1, LightComboAttack);
+	// 		break;
+	// 	}
+	// case (uint8)EMeleeAttackType::SecondaryAttack:
+	// 	{
+	// 		CachedBaseCharacter->PlayAnimMontage(ComboMontage, 1, HeavyComboAttack);
+	// 		break;
+	// 	}
+	// default:
+	// 	break;
+	// }
 }
 
 void UBaseCharacterAnimInstance::SetDefaultCombos()
