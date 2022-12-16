@@ -20,14 +20,29 @@ public:
 	FOnCurrentWeaponAmmoChangedEvent OnCurrentWeaponAmmoChangedEvent;
 	FOnEquippedItemChanged OnEquippedItemChanged;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	AMeleeWeapon* CurrentWeapon;
+
+	UFUNCTION(BlueprintCallable)
+	void PickupWeapon(AMeleeWeapon* Weapon);
+
 	UFUNCTION(BlueprintCallable)
 	bool GetIsEquipping() const;
+
+	UFUNCTION(BlueprintCallable)
+	void StartEquipping();
+
+	UFUNCTION(BlueprintCallable)
+	void StartUnEquipping();
+
+	void AttachWeaponToSocket();
+	void DeAttachWeaponToSocket();
+	void ToggleEquip();
+
+	bool bIsEquipping = false;
+	bool bIsEquipped = false;
 protected:
 	virtual void BeginPlay() override;
-
-private:
-	bool bIsEquipping = false;
-	
 
 	TWeakObjectPtr<ABaseCharacter> CachedBaseCharacter;
 };

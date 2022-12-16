@@ -4,7 +4,6 @@
 #include "BaseCharacterAnimInstance.h"
 #include "Domain/Character/BaseCharacter.h"
 #include "Domain/Components/BaseCharacterMovementComponent.h"
-#include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 void UBaseCharacterAnimInstance::NativeBeginPlay()
 {

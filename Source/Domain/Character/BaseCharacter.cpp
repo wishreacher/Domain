@@ -123,6 +123,11 @@ void ABaseCharacter::PossessedBy(AController* NewController)
 	}
 }
 
+void ABaseCharacter::ToggleEquip()
+{
+	CharacterEquipmentComponent->ToggleEquip();
+}
+
 void ABaseCharacter::Mantle(bool bForce)
 {
 	if(!(CanMantle() || bForce))

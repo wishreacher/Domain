@@ -3,6 +3,13 @@
 
 #include "EquippableItem.h"
 
+#include "Components/BoxComponent.h"
+
+AEquippableItem::AEquippableItem()
+{
+	InteractCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Interact Collision"));
+}
+
 EEquipableItemType AEquippableItem::GetItemType() const
 {
 	return EquippedItemType;
@@ -18,24 +25,14 @@ FName AEquippableItem::GetUnEquippedSocketName() const
 	return UnEquippedSocketName;
 }
 
-FName AEquippableItem::GetSecondHandEquippedSocketName() const
-{
-	return SecondHandEquippedSocketName;
-}
-
-FName AEquippableItem::GetSecondHandUnEquippedSocketName() const
-{
-	return SecondHandUnEquippedSocketName;
-}
-
-bool AEquippableItem::GetIsDual() const
-{
-	return bIsWeaponDual;
-}
-
 UAnimMontage* AEquippableItem::GetCharacterEquipAnimMontage() const
 {
 	return CharacterEquipAnimMontage;
+}
+
+UAnimMontage* AEquippableItem::GetCharacterUnEquipAnimMontage() const
+{
+	return CharacterUnEquipAnimMontage;
 }
 
 void AEquippableItem::SetOwner(AActor* NewOwner)

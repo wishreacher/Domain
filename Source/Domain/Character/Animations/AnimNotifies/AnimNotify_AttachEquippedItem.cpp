@@ -2,7 +2,6 @@
 
 
 #include "Domain/Character/Animations/AnimNotifies/AnimNotify_AttachEquippedItem.h"
-
 #include "Domain/Character/BaseCharacter.h"
 #include "Domain/Components/CharacterComponents/CharacterEquipmentComponent.h"
 
@@ -11,8 +10,13 @@ void UAnimNotify_AttachEquippedItem::Notify(USkeletalMeshComponent* MeshComp, UA
 {
 	Super::Notify(MeshComp, Animation, EventReference);
 	ABaseCharacter* CharacterOwner = Cast<ABaseCharacter>(MeshComp->GetOwner());
-	if(!IsValid(CharacterOwner))
+	if(IsValid(CharacterOwner))
 	{
-		return;
+		if(UCharacterEquipmentComponent* Component = CharacterOwner->GetCharacterEquipmentComponent())
+		{
+			Component->AttachWeaponToSocket();
+			Component->bIsEquipping = false;
+			Component->bIsEquipped = true;
+		}
 	}
 }

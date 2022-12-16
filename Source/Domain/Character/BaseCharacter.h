@@ -80,6 +80,9 @@ public:
 	virtual void UnCrouch(bool bClientSimulation) override;
 	virtual void StartTakeDown();
 	virtual void PossessedBy(AController* NewController) override;
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void ToggleEquip();
 
 	/** Activates mantling
 	 * if ULedgeDetectorComponent() detects a climbable ledge:
@@ -92,7 +95,9 @@ public:
 	FORCEINLINE void SetTimeDilation(float NewDilation){UGameplayStatics::SetGlobalTimeDilation(GetWorld(), NewDilation);}
 	
 	//-----------------------------------------Getters------------------------------------------
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UBaseCharacterMovementComponent* GetBaseCharacterMovementComponent() const { return BaseCharacterMovementComponent; }
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UCharacterEquipmentComponent* GetCharacterEquipmentComponent() const { return CharacterEquipmentComponent; }
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool GetIsSprinting() const {return bIsSprintRequested;}
@@ -150,16 +155,16 @@ protected:
 
 	virtual void OnOutOfStamina(bool IsOutOfStamina);
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBaseCharacterMovementComponent* BaseCharacterMovementComponent;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCharacterAttributeComponent* CharacterAttributeComponent;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCharacterEquipmentComponent* CharacterEquipmentComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ULedgeDetectorComponent* LedgeDetectorComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

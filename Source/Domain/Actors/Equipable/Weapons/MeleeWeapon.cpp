@@ -6,6 +6,7 @@
 #include "Camera/CameraShakeSourceComponent.h"
 #include "Domain/Character/PlayerCharacter.h"
 #include "Domain/Character/Animations/BaseCharacterAnimInstance.h"
+#include "Engine/DamageEvents.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {

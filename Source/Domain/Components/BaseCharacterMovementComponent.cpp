@@ -7,7 +7,6 @@
 #include "../Character/BaseCharacter.h"
 #include "Curves/CurveVector.h"
 #include "Engine/World.h"
-#include "CharacterComponents/CharacterEquipmentComponent.h"
 
 //General
 float UBaseCharacterMovementComponent::GetMaxSpeed() const
